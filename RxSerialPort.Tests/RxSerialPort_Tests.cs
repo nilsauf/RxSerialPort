@@ -19,11 +19,13 @@ namespace RxSerialPort.Tests
 				.Select(@event => @event.Data)
 				.Subscribe(data => { }, ex => { }, () => { });
 
+			serialPort.Open();
 			serialPort2.Open();
 			serialPort2.WriteLine("Hello Port");
 
 			await Task.Delay(500);
 
+			serialPort2.Dispose();
 			serialPort.Dispose();
 		}
 	}
