@@ -28,5 +28,24 @@ namespace RxSerialPort.Tests
 			serialPort2.Dispose();
 			serialPort.Dispose();
 		}
+
+		[Fact()]
+		public async Task ConnectByName()
+		{
+			var serialPort2 = new SerialPort(SerialPort.GetPortNames()[1]);
+
+			var sub = RxSerialPort.Connect(SerialPort.GetPortNames()[0])
+				.Where(@event => @event.EventType == SerialPortEventType.DataReceived)
+				.Select(@event => @event.Data)
+				.Subscribe(data => { }, ex => { }, () => { });
+
+			serialPort2.Open();
+			serialPort2.WriteLine("Hello Port");
+
+			await Task.Delay(500);
+
+			serialPort2.Dispose();
+			sub.Dispose();
+		}
 	}
 }

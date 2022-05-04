@@ -7,6 +7,23 @@
 
 	public static class RxSerialPort
 	{
+		public static IObservable<SerialPortEvent> Connect(string portName)
+		{
+			return Connect(() => new SerialPort(portName));
+		}
+
+		public static IObservable<SerialPortEvent> Connect(Func<SerialPort> portFactory)
+		{
+			return Observable.Using(portFactory, serialPort =>
+			{
+				if(serialPort.IsOpen == false)
+				{
+					serialPort.Open();
+				}
+				return serialPort.Connect();
+			});
+		}
+
 		public static IObservable<SerialPortEvent> Connect(
 			this SerialPort serialPort)
 		{
