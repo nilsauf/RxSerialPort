@@ -2,7 +2,6 @@
 {
 	using ReactiveMarbles.ObservableEvents;
 	using System;
-	using System.IO;
 	using System.IO.Ports;
 	using System.Reactive.Linq;
 
@@ -23,13 +22,13 @@
 					var serialPortEvents = serialPort.Events();
 
 					return serialPortEvents.DataReceived
-							.Select(line => new SerialPortEvent(serialPort, SerialPortEventType.DataReceived))
+							.Select(line => new SerialPortEvent(serialPort, serialPort.ReadExisting()))
 						.Merge(serialPortEvents.Disposed
-							.Select(_ => new SerialPortEvent(serialPort, SerialPortEventType.Disposed)))
+							.Select(_ => new SerialPortEvent(serialPort)))
 						.Merge(serialPortEvents.ErrorReceived
-							.Select(args => new SerialPortEvent(serialPort, SerialPortEventType.ErrorReceived)))
+							.Select(errorEventArgs => new SerialPortEvent(serialPort, errorEventArgs.EventType)))
 						.Merge(serialPortEvents.PinChanged
-							.Select(args => new SerialPortEvent(serialPort, SerialPortEventType.PinChanged)));
+							.Select(pinChangedEventArgs => new SerialPortEvent(serialPort, pinChangedEventArgs.EventType)));
 				})
 				.TakeUntil(@event => @event.EventType == SerialPortEventType.Disposed)
 				.Publish()
