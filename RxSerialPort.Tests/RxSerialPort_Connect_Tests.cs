@@ -4,7 +4,7 @@
 	using System.Threading.Tasks;
 	using Xunit;
 
-	public class RxSerialPort_Tests
+	public class RxSerialPort_Connect_Tests
 	{
 		[Fact()]
 		public async Task Connect_Test()
