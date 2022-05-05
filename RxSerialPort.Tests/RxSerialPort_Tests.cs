@@ -1,11 +1,9 @@
-﻿using System;
-using System.IO.Ports;
-using System.Reactive.Linq;
-using System.Threading.Tasks;
-using Xunit;
-
-namespace RxSerialPort.Tests
+﻿namespace System.IO.Ports.Tests
 {
+	using System.Reactive.Linq;
+	using System.Threading.Tasks;
+	using Xunit;
+
 	public class RxSerialPort_Tests
 	{
 		[Fact()]

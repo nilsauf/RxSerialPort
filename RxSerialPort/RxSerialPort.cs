@@ -1,8 +1,7 @@
-﻿namespace RxSerialPort
+﻿namespace System.IO.Ports
 {
 	using ReactiveMarbles.ObservableEvents;
 	using System;
-	using System.IO.Ports;
 	using System.Reactive.Linq;
 
 	public static class RxSerialPort

@@ -1,4 +1,4 @@
-﻿namespace RxSerialPort
+﻿namespace System.IO.Ports
 {
 	public enum SerialPortEventType
 	{

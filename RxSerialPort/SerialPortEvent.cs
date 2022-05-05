@@ -1,7 +1,6 @@
-﻿namespace RxSerialPort
+﻿namespace System.IO.Ports
 {
 	using System;
-	using System.IO.Ports;
 
 	public struct SerialPortEvent
 	{

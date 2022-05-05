@@ -3,8 +3,8 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
-
     <IsPackable>false</IsPackable>
+    <RootNamespace>System.IO.Ports.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
