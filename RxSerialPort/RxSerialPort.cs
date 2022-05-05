@@ -12,6 +12,26 @@
 			return Connect(() => new SerialPort(portName));
 		}
 
+		public static IObservable<SerialPortEvent> Connect(string portName, int baudRate)
+		{
+			return Connect(() => new SerialPort(portName, baudRate));
+		}
+
+		public static IObservable<SerialPortEvent> Connect(string portName, int baudRate, Parity parity)
+		{
+			return Connect(() => new SerialPort(portName, baudRate, parity));
+		}
+
+		public static IObservable<SerialPortEvent> Connect(string portName, int baudRate, Parity parity, int dataBits)
+		{
+			return Connect(() => new SerialPort(portName, baudRate, parity, dataBits));
+		}
+
+		public static IObservable<SerialPortEvent> Connect(string portName, int baudRate, Parity parity, int dataBits, StopBits stopBits)
+		{
+			return Connect(() => new SerialPort(portName, baudRate, parity, dataBits, stopBits));
+		}
+
 		public static IObservable<SerialPortEvent> Connect(Func<SerialPort> portFactory)
 		{
 			return Observable.Using(portFactory, serialPort =>
