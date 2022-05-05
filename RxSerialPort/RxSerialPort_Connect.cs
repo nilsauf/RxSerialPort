@@ -4,7 +4,7 @@
 	using System;
 	using System.Reactive.Linq;
 
-	public static class RxSerialPort
+	public static partial class RxSerialPort
 	{
 		public static IObservable<SerialPortEvent> Connect(string portName)
 		{
