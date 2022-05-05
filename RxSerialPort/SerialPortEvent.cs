@@ -42,5 +42,23 @@
 		public string Data { get; }
 		public SerialError? ErrorType { get; }
 		public SerialPinChange? PinChangeType { get; }
+
+		public override string ToString()
+		{
+			string result = $"{nameof(SerialPortEvent)}: {nameof(this.EventType)} = {this.EventType}";
+
+			switch (this.EventType)
+			{
+				case SerialPortEventType.DataReceived:
+					return result + $"; {nameof(this.Data)} = {this.Data}";
+				case SerialPortEventType.ErrorReceived:
+					return result + $"; {nameof(this.ErrorType)} = {this.ErrorType.Value}";
+				case SerialPortEventType.PinChanged:
+					return result + $"; {nameof(this.PinChangeType)} = {this.PinChangeType.Value}";
+				case SerialPortEventType.Disposed:
+				default:
+					return result;
+			}
+		}
 	}
 }
