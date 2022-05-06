@@ -95,5 +95,21 @@
 				errorAction,
 				completedAction);
 		}
+
+		public static IObserver<string> AsWriteLineObserver(
+			this SerialPort serialPort,
+			Action<Exception> errorAction = null,
+			Action completedAction = null)
+		{
+			if (serialPort is null)
+			{
+				throw new ArgumentNullException(nameof(serialPort));
+			}
+
+			return serialPort.AsObserver(
+				(serialPort, data) => serialPort.WriteLine(data),
+				errorAction,
+				completedAction);
+		}
 	}
 }
