@@ -39,18 +39,7 @@
 				throw new ArgumentNullException(nameof(portFactoy));
 			}
 
-			var serialPort = portFactoy();
-			return source.WriteTo(serialPort,
-				ex =>
-				{
-					serialPort.Dispose();
-					errorAction?.Invoke(ex);
-				},
-				() =>
-				{
-					serialPort.Dispose();
-					completedAction?.Invoke();
-				});
+			return source.Subscribe(CreateWriteObserver(portFactoy, errorAction, completedAction));
 		}
 
 		public static IDisposable WriteTo(
@@ -69,7 +58,7 @@
 				throw new ArgumentNullException(nameof(serialPort));
 			}
 
-			return source.Subscribe(CreateWriteObserver(() => serialPort, errorAction, completedAction));
+			return source.Subscribe(serialPort.AsWriteObserver(errorAction, completedAction));
 		}
 	}
 }
