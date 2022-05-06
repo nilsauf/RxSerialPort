@@ -31,7 +31,7 @@
 				writeAction.Invoke(serialPort, data);
 			},
 			errorAction,
-			completedAction);
+			completedAction) ?? throw new InvalidOperationException($"{nameof(portFactory)} returned null!");
 		}
 
 		public static IObserver<string> AsObserver(
