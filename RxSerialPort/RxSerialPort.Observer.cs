@@ -21,7 +21,8 @@
 				throw new ArgumentNullException(nameof(writeAction));
 			}
 
-			return portFactory()?.AsObserver((serialPort, data) =>
+			SerialPort serialPort = portFactory() ?? throw new InvalidOperationException($"{nameof(portFactory)} returned null!");
+			return serialPort.AsObserver((serialPort, data) =>
 			{
 				if (serialPort.IsOpen == false)
 				{
@@ -30,8 +31,16 @@
 
 				writeAction.Invoke(serialPort, data);
 			},
-			errorAction,
-			completedAction) ?? throw new InvalidOperationException($"{nameof(portFactory)} returned null!");
+			ex =>
+			{
+				serialPort.Dispose();
+				errorAction?.Invoke(ex);
+			},
+			() =>
+			{
+				serialPort.Dispose();
+				completedAction?.Invoke();
+			});
 		}
 
 		public static IObserver<string> AsObserver(
