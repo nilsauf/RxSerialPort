@@ -6,7 +6,7 @@
 
 	public static partial class RxSerialPort
 	{
-		public static IObservable<SerialPortEvent> Connect(string portName)
+		public static IObservable<RxSerialPortEvent> Connect(string portName)
 		{
 			if (string.IsNullOrWhiteSpace(portName))
 			{
@@ -16,7 +16,7 @@
 			return Connect(() => new SerialPort(portName));
 		}
 
-		public static IObservable<SerialPortEvent> Connect(string portName, int baudRate)
+		public static IObservable<RxSerialPortEvent> Connect(string portName, int baudRate)
 		{
 			if (string.IsNullOrWhiteSpace(portName))
 			{
@@ -26,7 +26,7 @@
 			return Connect(() => new SerialPort(portName, baudRate));
 		}
 
-		public static IObservable<SerialPortEvent> Connect(string portName, int baudRate, Parity parity)
+		public static IObservable<RxSerialPortEvent> Connect(string portName, int baudRate, Parity parity)
 		{
 			if (string.IsNullOrWhiteSpace(portName))
 			{
@@ -36,7 +36,7 @@
 			return Connect(() => new SerialPort(portName, baudRate, parity));
 		}
 
-		public static IObservable<SerialPortEvent> Connect(string portName, int baudRate, Parity parity, int dataBits)
+		public static IObservable<RxSerialPortEvent> Connect(string portName, int baudRate, Parity parity, int dataBits)
 		{
 			if (string.IsNullOrWhiteSpace(portName))
 			{
@@ -46,7 +46,7 @@
 			return Connect(() => new SerialPort(portName, baudRate, parity, dataBits));
 		}
 
-		public static IObservable<SerialPortEvent> Connect(string portName, int baudRate, Parity parity, int dataBits, StopBits stopBits)
+		public static IObservable<RxSerialPortEvent> Connect(string portName, int baudRate, Parity parity, int dataBits, StopBits stopBits)
 		{
 			if (string.IsNullOrWhiteSpace(portName))
 			{
@@ -56,7 +56,7 @@
 			return Connect(() => new SerialPort(portName, baudRate, parity, dataBits, stopBits));
 		}
 
-		public static IObservable<SerialPortEvent> Connect(Func<SerialPort> portFactory)
+		public static IObservable<RxSerialPortEvent> Connect(Func<SerialPort> portFactory)
 		{
 			if (portFactory is null)
 			{
@@ -73,7 +73,7 @@
 			});
 		}
 
-		public static IObservable<SerialPortEvent> Connect(
+		public static IObservable<RxSerialPortEvent> Connect(
 			this SerialPort serialPort)
 		{
 			if (serialPort is null)
@@ -84,14 +84,14 @@
 			var serialPortEvents = serialPort.Events();
 
 			return serialPortEvents.DataReceived
-				.Select(line => new SerialPortEvent(serialPort, serialPort.ReadExisting()))
+				.Select(line => new RxSerialPortEvent(serialPort, serialPort.ReadExisting()))
 			.Merge(serialPortEvents.Disposed
-				.Select(_ => new SerialPortEvent(serialPort)))
+				.Select(_ => new RxSerialPortEvent(serialPort)))
 			.Merge(serialPortEvents.ErrorReceived
-				.Select(errorEventArgs => new SerialPortEvent(serialPort, errorEventArgs.EventType)))
+				.Select(errorEventArgs => new RxSerialPortEvent(serialPort, errorEventArgs.EventType)))
 			.Merge(serialPortEvents.PinChanged
-				.Select(pinChangedEventArgs => new SerialPortEvent(serialPort, pinChangedEventArgs.EventType)))
-			.TakeUntil(@event => @event.EventType == SerialPortEventType.Disposed)
+				.Select(pinChangedEventArgs => new RxSerialPortEvent(serialPort, pinChangedEventArgs.EventType)))
+			.TakeUntil(@event => @event.EventType == RxSerialPortEventType.Disposed)
 			.AsObservable();
 		}
 	}

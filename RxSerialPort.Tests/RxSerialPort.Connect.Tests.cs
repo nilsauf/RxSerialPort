@@ -13,7 +13,7 @@
 			var serialPort2 = new SerialPort(SerialPort.GetPortNames()[1]);
 
 			serialPort.Connect()
-				.Where(@event => @event.EventType == SerialPortEventType.DataReceived)
+				.Where(@event => @event.EventType == RxSerialPortEventType.DataReceived)
 				.Select(@event => @event.Data)
 				.Subscribe(data => { }, ex => { }, () => { });
 
@@ -33,7 +33,7 @@
 			var serialPort2 = new SerialPort(SerialPort.GetPortNames()[1]);
 
 			var sub = RxSerialPort.Connect(SerialPort.GetPortNames()[0])
-				.Where(@event => @event.EventType == SerialPortEventType.DataReceived)
+				.Where(@event => @event.EventType == RxSerialPortEventType.DataReceived)
 				.Select(@event => @event.Data)
 				.Subscribe(data => { }, ex => { }, () => { });
 

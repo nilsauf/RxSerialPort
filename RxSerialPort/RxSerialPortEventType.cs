@@ -1,6 +1,6 @@
 ﻿namespace System.IO.Ports
 {
-	public enum SerialPortEventType
+	public enum RxSerialPortEventType
 	{
 		DataReceived,
 		ErrorReceived,
