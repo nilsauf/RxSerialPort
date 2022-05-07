@@ -6,6 +6,7 @@
 	public enum RxSerialPortEventType
 	{
 		DataReceived,
+		DataRead,
 		ErrorReceived,
 		PinChanged,
 		Disposed
