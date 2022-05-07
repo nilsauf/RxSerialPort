@@ -40,10 +40,12 @@
 			this.PinChangeType = null;
 		}
 
+		internal SerialPort Sender { get; }
+
 		/// <summary>
-		/// The <see cref="SerialPort"/> which sended this event
+		/// The name of the serialport which sended this event
 		/// </summary>
-		public SerialPort Sender { get; }
+		public string PortName => this.Sender.PortName;
 
 		/// <summary>
 		/// The type of this event
@@ -70,7 +72,7 @@
 		{
 			string result = $"{nameof(RxSerialPortEvent)}: " +
 				$"{nameof(this.EventType)} = {this.EventType}; " +
-				$"{nameof(this.Sender)} = {this.Sender.PortName}";
+				$"{nameof(this.PortName)} = {this.PortName}";
 
 			switch (this.EventType)
 			{
