@@ -45,6 +45,7 @@
 			this.SerialData = null;
 			this.ErrorType = null;
 			this.PinChangeType = null;
+			this.TimeStamp = DateTime.Now;
 		}
 
 		internal SerialPort Sender { get; }
@@ -79,12 +80,15 @@
 		/// </summary>
 		public SerialPinChange? PinChangeType { get; }
 
+		public DateTime TimeStamp { get; }
+
 		/// <inheritdoc/>
 		public override string ToString()
 		{
 			string result = $"{nameof(RxSerialPortEvent<TData>)}: " +
 				$"{nameof(this.EventType)} = {this.EventType}; " +
-				$"{nameof(this.PortName)} = {this.PortName}";
+				$"{nameof(this.PortName)} = {this.PortName}" +
+				$"{nameof(this.TimeStamp)} = {this.TimeStamp.ToLongDateString()} {this.TimeStamp.ToLongTimeString()}";
 
 			switch (this.EventType)
 			{
