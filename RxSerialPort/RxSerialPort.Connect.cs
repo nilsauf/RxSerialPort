@@ -2,6 +2,7 @@
 {
 	using ReactiveMarbles.ObservableEvents;
 	using System;
+	using System.Collections.Generic;
 	using System.Reactive.Linq;
 
 	/// <summary>
@@ -166,18 +167,20 @@
 			var serialPortEvents = serialPort.Events();
 
 			return Observable.Merge(
-					serialPortEvents.DataReceived.Select(CreateReceivedOrRead),
+					serialPortEvents.DataReceived.SelectMany(CreateReceivedOrRead),
 					serialPortEvents.Disposed.Select(CreateDisposed),
 					serialPortEvents.ErrorReceived.Select(CreateErrorReceived),
 					serialPortEvents.PinChanged.Select(CreatePinChanged))
 				.TakeUntil(@event => @event.EventType == RxSerialPortEventType.Disposed)
 				.AsObservable();
 
-			RxSerialPortEvent<TData> CreateReceivedOrRead(SerialDataReceivedEventArgs dataReceivedArgs)
+			IEnumerable<RxSerialPortEvent<TData>> CreateReceivedOrRead(SerialDataReceivedEventArgs dataReceivedArgs)
 			{
-				return readFunc is null ?
-					new RxSerialPortEvent<TData>(serialPort, dataReceivedArgs.EventType) :
-					new RxSerialPortEvent<TData>(serialPort, dataReceivedArgs.EventType, readFunc(serialPort));
+				yield return new RxSerialPortEvent<TData>(serialPort, dataReceivedArgs.EventType);
+				if (readFunc != null)
+				{
+					yield return new RxSerialPortEvent<TData>(serialPort, dataReceivedArgs.EventType, readFunc(serialPort));
+				}
 			}
 
 			RxSerialPortEvent<TData> CreateDisposed(EventArgs _)
