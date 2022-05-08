@@ -61,7 +61,7 @@
 		/// Wraps an externally managed <see cref="SerialPort"/> and given <paramref name="writeAction"/> into an <see cref="IObserver{T}"/>.
 		/// </summary>
 		/// <param name="serialPort">The <see cref="SerialPort"/> to wrap</param>
-		/// <param name="writeAction">The action to call on new data to send</param>
+		/// <param name="writeAction">The action to call on new data to send. It will not be called, if <paramref name="serialPort"/> is closed</param>
 		/// <param name="errorAction">The optional action to handle errors in the stream</param>
 		/// <param name="completedAction">The optional action the handle the completion of the stream</param>
 		/// <returns>An observer which writes received data to the <paramref name="serialPort"/></returns>
@@ -87,7 +87,13 @@
 			}
 
 			return Observer.Create<string>(
-				data => writeAction(serialPort, data),
+				data =>
+				{
+					if (serialPort.IsOpen)
+					{
+						writeAction(serialPort, data);
+					}
+				},
 				ex => errorAction?.Invoke(ex),
 				() => completedAction?.Invoke());
 		}
