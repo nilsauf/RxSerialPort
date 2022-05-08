@@ -147,7 +147,7 @@
 			var serialPortEvents = serialPort.Events();
 
 			return serialPortEvents.DataReceived
-				.Select(line => new RxSerialPortEvent(serialPort, serialPort.ReadExisting()))
+				.Select(dataReceivedArgs => new RxSerialPortEvent(serialPort, dataReceivedArgs.EventType))
 			.Merge(serialPortEvents.Disposed
 				.Select(_ => new RxSerialPortEvent(serialPort)))
 			.Merge(serialPortEvents.ErrorReceived

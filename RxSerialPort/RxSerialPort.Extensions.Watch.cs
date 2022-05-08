@@ -7,13 +7,15 @@
 
 	public static partial class RxSerialPort
 	{
+#pragma warning disable CS8629 // Nullable value type may be null.
+
 		/// <summary>
 		/// Watch the data events of an observable stream of <see cref="RxSerialPortEvent"/>
 		/// </summary>
 		/// <param name="portEvents">The source observable of <see cref="RxSerialPortEvent"/></param>
 		/// <returns>An observable stream of received data events</returns>
 		/// <exception cref="ArgumentNullException"></exception>
-		public static IObservable<string> WatchData(this IObservable<RxSerialPortEvent> portEvents)
+		public static IObservable<SerialData> WatchDataReceived(this IObservable<RxSerialPortEvent> portEvents)
 		{
 			if (portEvents is null)
 			{
@@ -21,8 +23,8 @@
 			}
 
 			return portEvents.Where(@event => @event.EventType == RxSerialPortEventType.DataReceived)
-				.Where(@event => string.IsNullOrEmpty(@event.Data) == false)
-				.Select(@event => @event.Data);
+				.Where(@event => @event.SerialData.HasValue)
+				.Select(@event => @event.SerialData.Value);
 		}
 
 		/// <summary>
@@ -77,5 +79,7 @@
 			return portEvents.Where(@event => @event.EventType == RxSerialPortEventType.Disposed)
 				.Select(_ => Unit.Default);
 		}
+
+#pragma warning restore CS8629 // Nullable value type may be null.
 	}
 }

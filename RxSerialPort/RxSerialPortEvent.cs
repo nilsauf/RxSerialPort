@@ -7,16 +7,16 @@
 	/// </summary>
 	public struct RxSerialPortEvent
 	{
-		internal RxSerialPortEvent(SerialPort serialPort, string data)
-			: this(serialPort, RxSerialPortEventType.DataReceived)
+		internal RxSerialPortEvent(SerialPort serialPort, object data)
+			: this(serialPort, RxSerialPortEventType.DataRead)
 		{
 			this.Data = data;
 		}
 
-		internal RxSerialPortEvent(SerialPort serialPort)
-			: this(serialPort, RxSerialPortEventType.Disposed)
+		internal RxSerialPortEvent(SerialPort serialPort, SerialData serialData)
+			: this(serialPort, RxSerialPortEventType.DataReceived)
 		{
-
+			this.SerialData = serialData;
 		}
 
 		internal RxSerialPortEvent(SerialPort serialPort, SerialError errorType)
@@ -31,11 +31,17 @@
 			this.PinChangeType = pinChangeType;
 		}
 
+		internal RxSerialPortEvent(SerialPort serialPort)
+			: this(serialPort, RxSerialPortEventType.Disposed)
+		{
+		}
+
 		private RxSerialPortEvent(SerialPort sender, RxSerialPortEventType eventType)
 		{
 			this.Sender = sender ?? throw new ArgumentNullException(nameof(sender));
 			this.EventType = eventType;
 			this.Data = null;
+			this.SerialData = null;
 			this.ErrorType = null;
 			this.PinChangeType = null;
 		}
@@ -53,9 +59,14 @@
 		public RxSerialPortEventType EventType { get; }
 
 		/// <summary>
-		/// The received data if <see cref="EventType"/> == <see cref="RxSerialPortEventType.DataReceived"/> null otherwise
+		/// The received data if <see cref="EventType"/> == <see cref="RxSerialPortEventType.DataRead"/> null otherwise
 		/// </summary>
-		public string Data { get; }
+		public object? Data { get; }
+
+		/// <summary>
+		/// The type of serial data received if <see cref="EventType"/> == <see cref="RxSerialPortEventType.DataReceived"/> null otherwise
+		/// </summary>
+		public SerialData? SerialData { get; }
 
 		/// <summary>
 		/// The type of error if <see cref="EventType"/> == <see cref="RxSerialPortEventType.ErrorReceived"/> null otherwise
@@ -77,11 +88,13 @@
 			switch (this.EventType)
 			{
 				case RxSerialPortEventType.DataReceived:
+					return result + $"; {nameof(this.SerialData)} = {this.SerialData}";
+				case RxSerialPortEventType.DataRead:
 					return result + $"; {nameof(this.Data)} = {this.Data}";
 				case RxSerialPortEventType.ErrorReceived:
-					return result + $"; {nameof(this.ErrorType)} = {this.ErrorType.Value}";
+					return result + $"; {nameof(this.ErrorType)} = {this.ErrorType}";
 				case RxSerialPortEventType.PinChanged:
-					return result + $"; {nameof(this.PinChangeType)} = {this.PinChangeType.Value}";
+					return result + $"; {nameof(this.PinChangeType)} = {this.PinChangeType}";
 				case RxSerialPortEventType.Disposed:
 				default:
 					return result;
