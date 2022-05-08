@@ -5,12 +5,13 @@
 	/// <summary>
 	/// An event description of a <see cref="SerialPort"/> event
 	/// </summary>
-	public struct RxSerialPortEvent
+	public struct RxSerialPortEvent<TData>
 	{
-		internal RxSerialPortEvent(SerialPort serialPort, object data)
-			: this(serialPort, RxSerialPortEventType.DataRead)
+		internal RxSerialPortEvent(SerialPort serialPort, SerialData serialData, TData data)
+			: this(serialPort, RxSerialPortEventType.DataReceivedAndRead)
 		{
 			this.Data = data;
+			this.SerialData = serialData;
 		}
 
 		internal RxSerialPortEvent(SerialPort serialPort, SerialData serialData)
@@ -40,7 +41,7 @@
 		{
 			this.Sender = sender ?? throw new ArgumentNullException(nameof(sender));
 			this.EventType = eventType;
-			this.Data = null;
+			this.Data = default(TData?);
 			this.SerialData = null;
 			this.ErrorType = null;
 			this.PinChangeType = null;
@@ -59,9 +60,9 @@
 		public RxSerialPortEventType EventType { get; }
 
 		/// <summary>
-		/// The received data if <see cref="EventType"/> == <see cref="RxSerialPortEventType.DataRead"/> null otherwise
+		/// The received data if <see cref="EventType"/> == <see cref="RxSerialPortEventType.DataReceivedAndRead"/> null otherwise
 		/// </summary>
-		public object? Data { get; }
+		public TData? Data { get; }
 
 		/// <summary>
 		/// The type of serial data received if <see cref="EventType"/> == <see cref="RxSerialPortEventType.DataReceived"/> null otherwise
@@ -81,7 +82,7 @@
 		/// <inheritdoc/>
 		public override string ToString()
 		{
-			string result = $"{nameof(RxSerialPortEvent)}: " +
+			string result = $"{nameof(RxSerialPortEvent<TData>)}: " +
 				$"{nameof(this.EventType)} = {this.EventType}; " +
 				$"{nameof(this.PortName)} = {this.PortName}";
 
@@ -89,8 +90,8 @@
 			{
 				case RxSerialPortEventType.DataReceived:
 					return result + $"; {nameof(this.SerialData)} = {this.SerialData}";
-				case RxSerialPortEventType.DataRead:
-					return result + $"; {nameof(this.Data)} = {this.Data}";
+				case RxSerialPortEventType.DataReceivedAndRead:
+					return result + $"; {nameof(this.SerialData)} = {this.SerialData}; {nameof(this.Data)} = {this.Data}";
 				case RxSerialPortEventType.ErrorReceived:
 					return result + $"; {nameof(this.ErrorType)} = {this.ErrorType}";
 				case RxSerialPortEventType.PinChanged:

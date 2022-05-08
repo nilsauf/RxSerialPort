@@ -12,8 +12,7 @@
 			var serialPort = new SerialPort(SerialPort.GetPortNames()[0]);
 			var serialPort2 = new SerialPort(SerialPort.GetPortNames()[1]);
 
-			serialPort.Connect()
-				.Where(@event => @event.EventType == RxSerialPortEventType.DataReceived)
+			serialPort.Connect(port => port.ReadExisting())
 				.Select(@event => @event.Data)
 				.Subscribe(data => { }, ex => { }, () => { });
 
@@ -32,15 +31,14 @@
 		{
 			var serialPort2 = new SerialPort(SerialPort.GetPortNames()[1]);
 
-			var sub = RxSerialPort.Connect(SerialPort.GetPortNames()[0])
-				.Where(@event => @event.EventType == RxSerialPortEventType.DataReceived)
+			var sub = RxSerialPort.Connect(SerialPort.GetPortNames()[0], port => port.ReadExisting())
 				.Select(@event => @event.Data)
 				.Subscribe(data => { }, ex => { }, () => { });
 
 			serialPort2.Open();
 			serialPort2.WriteLine("Hello Port");
 
-			await Task.Delay(500);
+			await Task.Delay(1000);
 
 			serialPort2.Dispose();
 			sub.Dispose();

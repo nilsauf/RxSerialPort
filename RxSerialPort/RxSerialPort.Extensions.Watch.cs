@@ -10,12 +10,30 @@
 #pragma warning disable CS8629 // Nullable value type may be null.
 
 		/// <summary>
-		/// Watch the data events of an observable stream of <see cref="RxSerialPortEvent"/>
+		/// Watch the data read events of an observable stream of <see cref="RxSerialPortEvent{TData}"/>
 		/// </summary>
-		/// <param name="portEvents">The source observable of <see cref="RxSerialPortEvent"/></param>
+		/// <param name="portEvents">The source observable of <see cref="RxSerialPortEvent{TData}"/></param>
+		/// <returns>An observable stream of read data events</returns>
+		/// <exception cref="ArgumentNullException"></exception>
+		public static IObservable<TData> WatchDataRead<TData>(this IObservable<RxSerialPortEvent<TData>> portEvents)
+		{
+			if (portEvents is null)
+			{
+				throw new ArgumentNullException(nameof(portEvents));
+			}
+
+			return portEvents.Where(@event => @event.EventType == RxSerialPortEventType.DataReceivedAndRead)
+				.Where(@event => @event.Data != null)
+				.Select(@event => @event.Data);
+		}
+
+		/// <summary>
+		/// Watch the data events of an observable stream of <see cref="RxSerialPortEvent{TData}"/>
+		/// </summary>
+		/// <param name="portEvents">The source observable of <see cref="RxSerialPortEvent{TData}"/></param>
 		/// <returns>An observable stream of received data events</returns>
 		/// <exception cref="ArgumentNullException"></exception>
-		public static IObservable<SerialData> WatchDataReceived(this IObservable<RxSerialPortEvent> portEvents)
+		public static IObservable<SerialData> WatchDataReceived<TData>(this IObservable<RxSerialPortEvent<TData>> portEvents)
 		{
 			if (portEvents is null)
 			{
@@ -28,12 +46,12 @@
 		}
 
 		/// <summary>
-		/// Watch the <see cref="SerialError"/> events of an observable stream of <see cref="RxSerialPortEvent"/>
+		/// Watch the <see cref="SerialError"/> events of an observable stream of <see cref="RxSerialPortEvent{TData}"/>
 		/// </summary>
-		/// <param name="portEvents">The source observable of <see cref="RxSerialPortEvent"/></param>
+		/// <param name="portEvents">The source observable of <see cref="RxSerialPortEvent{TData}"/></param>
 		/// <returns>An observable stream of received <see cref="SerialError"/> events</returns>
 		/// <exception cref="ArgumentNullException"></exception>
-		public static IObservable<SerialError> WatchErrors(this IObservable<RxSerialPortEvent> portEvents)
+		public static IObservable<SerialError> WatchErrors<TData>(this IObservable<RxSerialPortEvent<TData>> portEvents)
 		{
 			if (portEvents is null)
 			{
@@ -46,12 +64,12 @@
 		}
 
 		/// <summary>
-		/// Watch the <see cref="SerialPinChange"/> events of an observable stream of <see cref="RxSerialPortEvent"/>
+		/// Watch the <see cref="SerialPinChange"/> events of an observable stream of <see cref="RxSerialPortEvent{TData}"/>
 		/// </summary>
-		/// <param name="portEvents">The source observable of <see cref="RxSerialPortEvent"/></param>
+		/// <param name="portEvents">The source observable of <see cref="RxSerialPortEvent{TData}"/></param>
 		/// <returns>An observable stream of received <see cref="SerialPinChange"/> events</returns>
 		/// <exception cref="ArgumentNullException"></exception>
-		public static IObservable<SerialPinChange> WatchPinChanges(this IObservable<RxSerialPortEvent> portEvents)
+		public static IObservable<SerialPinChange> WatchPinChanges<TData>(this IObservable<RxSerialPortEvent<TData>> portEvents)
 		{
 			if (portEvents is null)
 			{
@@ -64,12 +82,12 @@
 		}
 
 		/// <summary>
-		/// Watch the disposing event of an observable stream of <see cref="RxSerialPortEvent"/>
+		/// Watch the disposing event of an observable stream of <see cref="RxSerialPortEvent{TData}"/>
 		/// </summary>
-		/// <param name="portEvents">The source observable of <see cref="RxSerialPortEvent"/></param>
+		/// <param name="portEvents">The source observable of <see cref="RxSerialPortEvent{TData}"/></param>
 		/// <returns>An observable stream of received disposing event</returns>
 		/// <exception cref="ArgumentNullException"></exception>
-		public static IObservable<Unit> WatchDisposing(this IObservable<RxSerialPortEvent> portEvents)
+		public static IObservable<Unit> WatchDisposing<TData>(this IObservable<RxSerialPortEvent<TData>> portEvents)
 		{
 			if (portEvents is null)
 			{

@@ -15,14 +15,16 @@
 		/// <param name="portName">The name of the port to connect to.</param>
 		/// <returns>An observable stream of serial port events of the <see cref="SerialPort"/>.</returns>
 		/// <exception cref="ArgumentException"></exception>
-		public static IObservable<RxSerialPortEvent> Connect(string portName)
+		public static IObservable<RxSerialPortEvent<TData>> Connect<TData>(
+			string portName,
+			Func<SerialPort, TData> readFunc = null)
 		{
 			if (string.IsNullOrWhiteSpace(portName))
 			{
 				throw new ArgumentException($"'{nameof(portName)}' cannot be null or whitespace.", nameof(portName));
 			}
 
-			return Connect(() => new SerialPort(portName));
+			return Connect(() => new SerialPort(portName), readFunc);
 		}
 
 		/// <summary>
@@ -32,14 +34,16 @@
 		/// <param name="baudRate">The baudrate setting of the port to connect to.</param>
 		/// <returns>An observable stream of serial port events of the <see cref="SerialPort"/>.</returns>
 		/// <exception cref="ArgumentException"></exception>
-		public static IObservable<RxSerialPortEvent> Connect(string portName, int baudRate)
+		public static IObservable<RxSerialPortEvent<TData>> Connect<TData>(
+			string portName, int baudRate,
+			Func<SerialPort, TData> readFunc = null)
 		{
 			if (string.IsNullOrWhiteSpace(portName))
 			{
 				throw new ArgumentException($"'{nameof(portName)}' cannot be null or whitespace.", nameof(portName));
 			}
 
-			return Connect(() => new SerialPort(portName, baudRate));
+			return Connect(() => new SerialPort(portName, baudRate), readFunc);
 		}
 
 		/// <summary>
@@ -50,14 +54,17 @@
 		/// <param name="parity">The parity settings of the port to connect to.</param>
 		/// <returns>An observable stream of serial port events of the <see cref="SerialPort"/>.</returns>
 		/// <exception cref="ArgumentException"></exception>
-		public static IObservable<RxSerialPortEvent> Connect(string portName, int baudRate, Parity parity)
+		public static IObservable<RxSerialPortEvent<TData>> Connect<TData>(
+			string portName, int baudRate, Parity parity,
+			Func<SerialPort, TData> readFunc = null)
 		{
 			if (string.IsNullOrWhiteSpace(portName))
 			{
 				throw new ArgumentException($"'{nameof(portName)}' cannot be null or whitespace.", nameof(portName));
 			}
 
-			return Connect(() => new SerialPort(portName, baudRate, parity));
+			return Connect(
+				() => new SerialPort(portName, baudRate, parity), readFunc);
 		}
 
 		/// <summary>
@@ -69,14 +76,18 @@
 		/// <param name="dataBits">The dataBits setting of the port to connect to.</param>
 		/// <returns>An observable stream of serial port events of the <see cref="SerialPort"/>.</returns>
 		/// <exception cref="ArgumentException"></exception>
-		public static IObservable<RxSerialPortEvent> Connect(string portName, int baudRate, Parity parity, int dataBits)
+		public static IObservable<RxSerialPortEvent<TData>> Connect<TData>(
+			string portName, int baudRate, Parity parity, int dataBits,
+			Func<SerialPort, TData> readFunc = null)
 		{
 			if (string.IsNullOrWhiteSpace(portName))
 			{
 				throw new ArgumentException($"'{nameof(portName)}' cannot be null or whitespace.", nameof(portName));
 			}
 
-			return Connect(() => new SerialPort(portName, baudRate, parity, dataBits));
+			return Connect(
+				() => new SerialPort(portName, baudRate, parity, dataBits),
+				readFunc);
 		}
 
 		/// <summary>
@@ -89,14 +100,18 @@
 		/// <param name="stopBits">The stopBits setting of the port to connect to.</param>
 		/// <returns>An observable stream of serial port events of the <see cref="SerialPort"/>.</returns>
 		/// <exception cref="ArgumentException"></exception>
-		public static IObservable<RxSerialPortEvent> Connect(string portName, int baudRate, Parity parity, int dataBits, StopBits stopBits)
+		public static IObservable<RxSerialPortEvent<TData>> Connect<TData>(
+			string portName, int baudRate, Parity parity, int dataBits, StopBits stopBits,
+			Func<SerialPort, TData> readFunc = null)
 		{
 			if (string.IsNullOrWhiteSpace(portName))
 			{
 				throw new ArgumentException($"'{nameof(portName)}' cannot be null or whitespace.", nameof(portName));
 			}
 
-			return Connect(() => new SerialPort(portName, baudRate, parity, dataBits, stopBits));
+			return Connect(
+				() => new SerialPort(portName, baudRate, parity, dataBits, stopBits),
+				readFunc);
 		}
 
 		/// <summary>
@@ -109,7 +124,9 @@
 		/// The created <see cref="SerialPort"/> will be managed by the stream. 
 		/// Don't open, close, dispose or use it anywhere else.
 		/// </remarks>
-		public static IObservable<RxSerialPortEvent> Connect(Func<SerialPort> portFactory)
+		public static IObservable<RxSerialPortEvent<TData>> Connect<TData>(
+			Func<SerialPort> portFactory,
+			Func<SerialPort, TData> readFunc = null)
 		{
 			if (portFactory is null)
 			{
@@ -122,7 +139,7 @@
 				{
 					serialPort.Open();
 				}
-				return serialPort.Connect();
+				return serialPort.Connect(readFunc);
 			});
 		}
 
@@ -130,14 +147,16 @@
 		/// Connects to the events of a <see cref="SerialPort"/>.
 		/// </summary>
 		/// <param name="serialPort">The <see cref="SerialPort"/> to connect to.</param>
+		/// <param name="readFunc">An optional function to read data from <paramref name="serialPort"/> on data reveceived</param>
 		/// <returns>An observable stream of serial port events.</returns>
 		/// <exception cref="ArgumentNullException"></exception>S
 		/// <remarks>
 		/// The provided <paramref name="serialPort"/> will NOT be managed by the stream!
 		/// It needs to be opend, closed and disposed by the using code.
 		/// </remarks>
-		public static IObservable<RxSerialPortEvent> Connect(
-			this SerialPort serialPort)
+		public static IObservable<RxSerialPortEvent<TData>> Connect<TData>(
+			this SerialPort serialPort,
+			Func<SerialPort, TData> readFunc = null)
 		{
 			if (serialPort is null)
 			{
@@ -146,16 +165,35 @@
 
 			var serialPortEvents = serialPort.Events();
 
-			return serialPortEvents.DataReceived
-				.Select(dataReceivedArgs => new RxSerialPortEvent(serialPort, dataReceivedArgs.EventType))
-			.Merge(serialPortEvents.Disposed
-				.Select(_ => new RxSerialPortEvent(serialPort)))
-			.Merge(serialPortEvents.ErrorReceived
-				.Select(errorEventArgs => new RxSerialPortEvent(serialPort, errorEventArgs.EventType)))
-			.Merge(serialPortEvents.PinChanged
-				.Select(pinChangedEventArgs => new RxSerialPortEvent(serialPort, pinChangedEventArgs.EventType)))
-			.TakeUntil(@event => @event.EventType == RxSerialPortEventType.Disposed)
-			.AsObservable();
+			return Observable.Merge(
+					serialPortEvents.DataReceived.Select(CreateReceivedOrRead),
+					serialPortEvents.Disposed.Select(CreateDisposed),
+					serialPortEvents.ErrorReceived.Select(CreateErrorReceived),
+					serialPortEvents.PinChanged.Select(CreatePinChanged))
+				.TakeUntil(@event => @event.EventType == RxSerialPortEventType.Disposed)
+				.AsObservable();
+
+			RxSerialPortEvent<TData> CreateReceivedOrRead(SerialDataReceivedEventArgs dataReceivedArgs)
+			{
+				return readFunc is null ?
+					new RxSerialPortEvent<TData>(serialPort, dataReceivedArgs.EventType) :
+					new RxSerialPortEvent<TData>(serialPort, dataReceivedArgs.EventType, readFunc(serialPort));
+			}
+
+			RxSerialPortEvent<TData> CreateDisposed(EventArgs _)
+			{
+				return new RxSerialPortEvent<TData>(serialPort);
+			}
+
+			RxSerialPortEvent<TData> CreateErrorReceived(SerialErrorReceivedEventArgs errorEventArgs)
+			{
+				return new RxSerialPortEvent<TData>(serialPort, errorEventArgs.EventType);
+			}
+
+			RxSerialPortEvent<TData> CreatePinChanged(SerialPinChangedEventArgs pinChangedEventArgs)
+			{
+				return new RxSerialPortEvent<TData>(serialPort, pinChangedEventArgs.EventType);
+			}
 		}
 	}
 }
