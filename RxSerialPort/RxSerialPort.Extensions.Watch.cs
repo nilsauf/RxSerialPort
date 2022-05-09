@@ -15,7 +15,7 @@
 		/// <param name="portEvents">The source observable of <see cref="RxSerialPortEvent{TData}"/></param>
 		/// <returns>An observable stream of read data events</returns>
 		/// <exception cref="ArgumentNullException"></exception>
-		public static IObservable<TData> WatchDataRead<TData>(this IObservable<RxSerialPortEvent<TData>> portEvents)
+		public static IObservable<TData> WatchData<TData>(this IObservable<RxSerialPortEvent<TData>> portEvents)
 		{
 			if (portEvents is null)
 			{

@@ -27,7 +27,7 @@
 				throw new ArgumentNullException(nameof(portFactory));
 			}
 
-			return CreateObserver(
+			return CreateObserver<string>(
 				portFactory,
 				(serialPort, data) => serialPort.Write(data),
 				errorAction,
@@ -56,7 +56,7 @@
 				throw new ArgumentNullException(nameof(serialPort));
 			}
 
-			return serialPort.AsObserver(
+			return serialPort.AsObserver<string>(
 				(serialPort, data) => serialPort.Write(data),
 				errorAction,
 				completedAction);

@@ -13,7 +13,7 @@
 			var serialPort2 = new SerialPort(SerialPort.GetPortNames()[1]);
 
 			serialPort.Connect(port => port.ReadExisting())
-				.Select(@event => @event.Data)
+				.WatchData()
 				.Subscribe(data => { }, ex => { }, () => { });
 
 			serialPort.Open();
