@@ -133,6 +133,12 @@
 
 			return Observable.Using(portFactory, serialPort =>
 			{
+				if (serialPort is null)
+				{
+					return Observable.Throw<RxSerialPortEvent<TData>>(
+						new InvalidOperationException($"{nameof(portFactory)} of Connect returned null!"));
+				}
+
 				if (serialPort.IsOpen == false)
 				{
 					serialPort.Open();
