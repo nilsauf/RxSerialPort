@@ -1,10 +1,30 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
     <RootNamespace>System.IO.Ports.Tests</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup>
+	  <TEST_WITH_REAL_PORTS>false</TEST_WITH_REAL_PORTS>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU' and '$(TEST_WITH_REAL_PORTS)'=='false'">
+    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU' and '$(TEST_WITH_REAL_PORTS)'=='true'">
+	<DefineConstants>$(DefineConstants)TRACE;TEST_WITH_REAL_PORTS</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU' and '$(TEST_WITH_REAL_PORTS)'=='false'">
+    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU' and '$(TEST_WITH_REAL_PORTS)'=='true'">
+  	<DefineConstants>$(DefineConstants)TRACE;TEST_WITH_REAL_PORTS</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
