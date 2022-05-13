@@ -111,13 +111,13 @@
 		{
 			string testLine = "Hello Port";
 			bool receivedCalled = false;
-			using var serialPort = new SerialPort(SerialPort.GetPortNames()[0]);
-			using var serialPort2 = new SerialPort(SerialPort.GetPortNames()[1]);
+			using var receivingPort = new SerialPort(SerialPort.GetPortNames()[0]);
+			using var sendingPort = new SerialPort(SerialPort.GetPortNames()[1]);
 
-			serialPort.Open();
-			serialPort2.Open();
+			receivingPort.Open();
+			sendingPort.Open();
 
-			using var sub = serialPort.Connect(port => port.ReadExisting().Trim('\n'))
+			using var sub = receivingPort.Connect(port => port.ReadLine())
 				.WatchData()
 				.Subscribe(data =>
 				{
@@ -125,7 +125,7 @@
 					receivedCalled = true;
 				});
 
-			serialPort2.WriteLine(testLine);
+			sendingPort.WriteLine(testLine);
 
 			await Task.Delay(500);
 
@@ -137,12 +137,12 @@
 		{
 			string testLine = "Hello Port";
 			bool receivedCalled = false;
-			using var serialPort2 = new SerialPort(SerialPort.GetPortNames()[1]);
-			serialPort2.Open();
+			using var sendingPort = new SerialPort(SerialPort.GetPortNames()[1]);
+			sendingPort.Open();
 
 			using var sub = RxSerialPort.Connect(
 					() => new SerialPort(SerialPort.GetPortNames()[0]),
-					port => port.ReadExisting().Trim('\n'))
+					port => port.ReadLine())
 				.WatchData()
 				.Subscribe(data =>
 				{
@@ -150,7 +150,7 @@
 					receivedCalled = true;
 				});
 
-			serialPort2.WriteLine("Hello Port");
+			sendingPort.WriteLine("Hello Port");
 
 			await Task.Delay(500);
 
