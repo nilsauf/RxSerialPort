@@ -76,17 +76,17 @@
 		{
 			string testLine = "Hello World";
 			bool writeActionCalled = false;
-			using var serialPort = new SerialPort(SerialPort.GetPortNames()[0]);
-			serialPort.Open();
+			using var receivingPort = new SerialPort(SerialPort.GetPortNames()[0]);
+			receivingPort.OpenSafelyForTest();
 			var writeAction = new Action<SerialPort, string>((port, line) =>
 			{
 				Assert.NotNull(port);
-				Assert.Same(serialPort, port);
+				Assert.Same(receivingPort, port);
 				Assert.Equal(line, testLine);
 				writeActionCalled = true;
 			});
 
-			var serialPortObserver = serialPort.AsObserver(writeAction);
+			var serialPortObserver = receivingPort.AsObserver(writeAction);
 
 			serialPortObserver.OnNext(testLine);
 

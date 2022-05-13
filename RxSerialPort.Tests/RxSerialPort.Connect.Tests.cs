@@ -106,6 +106,47 @@
 		}
 
 #if TEST_WITH_REAL_PORTS
+		[Fact]
+		public async Task Connect_Extension_ReceivingData()
+		{
+			string testLine = "Hello Port";
+			bool receivedCalled = false;
+			using var receivingPort = new SerialPort(SerialPort.GetPortNames()[0]);
+			using var sendingPort = new SerialPort(SerialPort.GetPortNames()[1]);
+
+			receivingPort.OpenSafelyForTest();
+			sendingPort.OpenSafelyForTest();
+
+			using var sub = receivingPort.Connect()
+				.WatchDataReceived()
+				.Subscribe(_ => receivedCalled = true);
+
+			sendingPort.WriteLine(testLine);
+
+			await Task.Delay(500);
+
+			Assert.True(receivedCalled);
+		}
+
+		[Fact()]
+		public async Task Connect_ReceivingData_Normal()
+		{
+			string testLine = "Hello Port";
+			bool receivedCalled = false;
+			using var sendingPort = new SerialPort(SerialPort.GetPortNames()[1]);
+			sendingPort.OpenSafelyForTest();
+
+			using var sub = RxSerialPort.Connect(() => new SerialPort(SerialPort.GetPortNames()[0]))
+				.WatchDataReceived()
+				.Subscribe(_ => receivedCalled = true);
+
+			sendingPort.WriteLine(testLine);
+
+			await Task.Delay(500);
+
+			Assert.True(receivedCalled);
+		}
+
 		[Fact()]
 		public async Task ConnectAndRead_Ex_ReceivingData_Normal()
 		{
@@ -114,8 +155,8 @@
 			using var receivingPort = new SerialPort(SerialPort.GetPortNames()[0]);
 			using var sendingPort = new SerialPort(SerialPort.GetPortNames()[1]);
 
-			receivingPort.Open();
-			sendingPort.Open();
+			receivingPort.OpenSafelyForTest();
+			sendingPort.OpenSafelyForTest();
 
 			using var sub = receivingPort.Connect(port => port.ReadLine())
 				.WatchData()
@@ -138,7 +179,7 @@
 			string testLine = "Hello Port";
 			bool receivedCalled = false;
 			using var sendingPort = new SerialPort(SerialPort.GetPortNames()[1]);
-			sendingPort.Open();
+			sendingPort.OpenSafelyForTest();
 
 			using var sub = RxSerialPort.Connect(
 					() => new SerialPort(SerialPort.GetPortNames()[0]),
@@ -150,7 +191,7 @@
 					receivedCalled = true;
 				});
 
-			sendingPort.WriteLine("Hello Port");
+			sendingPort.WriteLine(testLine);
 
 			await Task.Delay(500);
 
