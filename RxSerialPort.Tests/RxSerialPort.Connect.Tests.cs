@@ -128,6 +128,21 @@
 			Assert.True(receivedCalled);
 		}
 
+		[Fact]
+		public void Connect_Extension_DisposingEvent()
+		{
+			bool disposeEventCalled = false;
+			var receivingPort = new SerialPort("IrrelevantPortName");
+
+			using var sub = receivingPort.Connect()
+				.WatchDisposing()
+				.Subscribe(_ => disposeEventCalled = true);
+
+			receivingPort.Dispose();
+
+			Assert.True(disposeEventCalled);
+		}
+
 		[Fact()]
 		public async Task Connect_ReceivingData_Normal()
 		{
