@@ -8,7 +8,7 @@
 	public class RxSerialPort_Connect_Tests
 	{
 		[Fact]
-		public void ConnectAndRead_Ex_Creation_Normal()
+		public void ConnectAndRead_Extension_Creation_Normal()
 		{
 			var serialPort = new SerialPort();
 			Func<SerialPort, string> readFunction = port => string.Empty;
@@ -19,7 +19,7 @@
 		}
 
 		[Fact]
-		public void ConnectAndRead_Ex_Creation_PortNull()
+		public void ConnectAndRead_Extension_Creation_PortNull()
 		{
 			SerialPort serialPort = null;
 			Func<SerialPort, string> readFunction = port => string.Empty;
@@ -70,7 +70,7 @@
 		}
 
 		[Fact]
-		public void Connect_Ex_Creation_Normal()
+		public void Connect_Extension_Creation_Normal()
 		{
 			var serialPort = new SerialPort();
 
@@ -80,7 +80,7 @@
 		}
 
 		[Fact]
-		public void Connect_Ex_Creation_PortNull()
+		public void Connect_Extension_Creation_PortNull()
 		{
 			SerialPort serialPort = null;
 
@@ -163,7 +163,7 @@
 		}
 
 		[Fact()]
-		public async Task ConnectAndRead_Ex_ReceivingData_Normal()
+		public async Task ConnectAndRead_Extension_ReceivingData_Normal()
 		{
 			string testLine = "Hello Port";
 			bool receivedCalled = false;
