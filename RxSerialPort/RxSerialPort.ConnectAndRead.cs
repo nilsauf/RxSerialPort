@@ -168,6 +168,7 @@
 			}
 
 			var serialPortEvents = serialPort.Events();
+			string portName = serialPort.PortName;
 
 			return Observable.Merge(
 					serialPortEvents.DataReceived.SelectMany(CreateReceivedOrRead),
@@ -179,26 +180,26 @@
 
 			IEnumerable<RxSerialPortEvent<TData>> CreateReceivedOrRead(SerialDataReceivedEventArgs dataReceivedArgs)
 			{
-				yield return new RxSerialPortEvent<TData>(serialPort, dataReceivedArgs.EventType);
+				yield return new RxSerialPortEvent<TData>(portName, dataReceivedArgs.EventType);
 				if (readFunc != null)
 				{
-					yield return new RxSerialPortEvent<TData>(serialPort, dataReceivedArgs.EventType, readFunc(serialPort));
+					yield return new RxSerialPortEvent<TData>(portName, dataReceivedArgs.EventType, readFunc(serialPort));
 				}
 			}
 
 			RxSerialPortEvent<TData> CreateDisposed(EventArgs _)
 			{
-				return new RxSerialPortEvent<TData>(serialPort);
+				return new RxSerialPortEvent<TData>(portName);
 			}
 
 			RxSerialPortEvent<TData> CreateErrorReceived(SerialErrorReceivedEventArgs errorEventArgs)
 			{
-				return new RxSerialPortEvent<TData>(serialPort, errorEventArgs.EventType);
+				return new RxSerialPortEvent<TData>(portName, errorEventArgs.EventType);
 			}
 
 			RxSerialPortEvent<TData> CreatePinChanged(SerialPinChangedEventArgs pinChangedEventArgs)
 			{
-				return new RxSerialPortEvent<TData>(serialPort, pinChangedEventArgs.EventType);
+				return new RxSerialPortEvent<TData>(portName, pinChangedEventArgs.EventType);
 			}
 		}
 	}

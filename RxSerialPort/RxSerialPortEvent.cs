@@ -7,39 +7,39 @@
 	/// </summary>
 	public struct RxSerialPortEvent<TData>
 	{
-		internal RxSerialPortEvent(SerialPort serialPort, SerialData serialData, TData data)
-			: this(serialPort, RxSerialPortEventType.DataReceivedAndRead)
+		internal RxSerialPortEvent(string portName, SerialData serialData, TData data)
+			: this(portName, RxSerialPortEventType.DataReceivedAndRead)
 		{
 			this.Data = data;
 			this.SerialData = serialData;
 		}
 
-		internal RxSerialPortEvent(SerialPort serialPort, SerialData serialData)
-			: this(serialPort, RxSerialPortEventType.DataReceived)
+		internal RxSerialPortEvent(string portName, SerialData serialData)
+			: this(portName, RxSerialPortEventType.DataReceived)
 		{
 			this.SerialData = serialData;
 		}
 
-		internal RxSerialPortEvent(SerialPort serialPort, SerialError errorType)
-			: this(serialPort, RxSerialPortEventType.ErrorReceived)
+		internal RxSerialPortEvent(string portName, SerialError errorType)
+			: this(portName, RxSerialPortEventType.ErrorReceived)
 		{
 			this.ErrorType = errorType;
 		}
 
-		internal RxSerialPortEvent(SerialPort serialPort, SerialPinChange pinChangeType)
-			: this(serialPort, RxSerialPortEventType.PinChanged)
+		internal RxSerialPortEvent(string portName, SerialPinChange pinChangeType)
+			: this(portName, RxSerialPortEventType.PinChanged)
 		{
 			this.PinChangeType = pinChangeType;
 		}
 
-		internal RxSerialPortEvent(SerialPort serialPort)
-			: this(serialPort, RxSerialPortEventType.Disposed)
+		internal RxSerialPortEvent(string portName)
+			: this(portName, RxSerialPortEventType.Disposed)
 		{
 		}
 
-		private RxSerialPortEvent(SerialPort sender, RxSerialPortEventType eventType)
+		private RxSerialPortEvent(string portName, RxSerialPortEventType eventType)
 		{
-			this.Sender = sender ?? throw new ArgumentNullException(nameof(sender));
+			this.PortName = portName ?? throw new ArgumentNullException(nameof(portName));
 			this.EventType = eventType;
 			this.Data = default(TData?);
 			this.SerialData = null;
@@ -48,12 +48,10 @@
 			this.TimeStamp = DateTime.Now;
 		}
 
-		internal SerialPort Sender { get; }
-
 		/// <summary>
 		/// The name of the serialport which sended this event
 		/// </summary>
-		public string PortName => this.Sender.PortName;
+		public string PortName { get; }
 
 		/// <summary>
 		/// The type of this event
