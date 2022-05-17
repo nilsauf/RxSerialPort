@@ -16,5 +16,8 @@
 				}
 			}
 		}
+
+		public static string mockReadFunction(SerialPort port) => string.Empty;
+		public static void mockWriteFunction(SerialPort port, string payload) { }
 	}
 }

@@ -8,9 +8,9 @@
 		[Fact]
 		public void CreateObserver_Creation_Normal()
 		{
-			Action<SerialPort, string> writeAction = (port, line) => { };
-
-			var serialPortObserver = RxSerialPort.CreateObserver(() => new SerialPort(), writeAction);
+			var serialPortObserver = RxSerialPort.CreateObserver<string>(
+				() => new SerialPort(),
+				RxSerialPort_TestTools.mockWriteFunction);
 
 			Assert.NotNull(serialPortObserver);
 		}
@@ -26,28 +26,31 @@
 		[Fact]
 		public void CreatObserver_Creation_FactoryNull()
 		{
-			Action<SerialPort, string> writeAction = (port, line) => { };
 			Func<SerialPort> portFactory = null;
 
-			Assert.Throws<ArgumentNullException>(() => RxSerialPort.CreateObserver(portFactory, writeAction));
+			Assert.Throws<ArgumentNullException>(
+				() => RxSerialPort.CreateObserver<string>(
+					portFactory,
+					RxSerialPort_TestTools.mockWriteFunction));
 		}
 
 		[Fact]
 		public void CreatObserver_Creation_FactoryCreatesNull()
 		{
-			Action<SerialPort, string> writeAction = (port, line) => { };
 			Func<SerialPort> portFactory = () => null;
 
-			Assert.Throws<InvalidOperationException>(() => RxSerialPort.CreateObserver(portFactory, writeAction));
+			Assert.Throws<InvalidOperationException>(
+				() => RxSerialPort.CreateObserver<string>(
+					portFactory,
+					RxSerialPort_TestTools.mockWriteFunction));
 		}
 
 		[Fact]
 		public void AsObserver_Creation_Normal()
 		{
 			var serialPort = new SerialPort();
-			Action<SerialPort, string> writeAction = (port, line) => { };
 
-			var serialPortObserver = serialPort.AsObserver(writeAction);
+			var serialPortObserver = serialPort.AsObserver<string>(RxSerialPort_TestTools.mockWriteFunction);
 
 			Assert.NotNull(serialPortObserver);
 		}
@@ -65,9 +68,9 @@
 		public void AsObserver_Creation_SerialPortNull()
 		{
 			SerialPort serialPort = null;
-			Action<SerialPort, string> writeAction = (port, line) => { };
 
-			Assert.Throws<ArgumentNullException>(() => serialPort.AsObserver(writeAction));
+			Assert.Throws<ArgumentNullException>(
+				() => serialPort.AsObserver<string>(RxSerialPort_TestTools.mockWriteFunction));
 		}
 
 #if TEST_WITH_REAL_PORTS

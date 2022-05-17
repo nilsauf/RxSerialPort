@@ -9,9 +9,8 @@
 		public void ConnectAndRead_Extension_Creation_Normal()
 		{
 			var serialPort = new SerialPort();
-			Func<SerialPort, string> readFunction = port => string.Empty;
 
-			var serialPortObservable = serialPort.Connect(readFunction);
+			var serialPortObservable = serialPort.Connect(RxSerialPort_TestTools.mockReadFunction);
 
 			Assert.NotNull(serialPortObservable);
 		}
@@ -20,18 +19,16 @@
 		public void ConnectAndRead_Extension_Creation_PortNull()
 		{
 			SerialPort serialPort = null;
-			Func<SerialPort, string> readFunction = port => string.Empty;
 
-			Assert.Throws<ArgumentNullException>(() => serialPort.Connect(readFunction));
+			Assert.Throws<ArgumentNullException>(() => serialPort.Connect(RxSerialPort_TestTools.mockReadFunction));
 		}
 
 		[Fact]
 		public void ConnectAndRead_Creation_Normal()
 		{
-			Func<SerialPort, string> readFunction = port => string.Empty;
 			Func<SerialPort> serialPortFactory = () => new SerialPort();
 
-			var serialPortObservable = RxSerialPort.Connect(serialPortFactory, readFunction);
+			var serialPortObservable = RxSerialPort.Connect(serialPortFactory, RxSerialPort_TestTools.mockReadFunction);
 
 			Assert.NotNull(serialPortObservable);
 		}
@@ -39,10 +36,9 @@
 		[Fact]
 		public void ConnectAndRead_Creation_PortFactoryNull()
 		{
-			Func<SerialPort, string> readFunction = port => string.Empty;
 			Func<SerialPort> serialPortFactory = null;
 
-			Assert.Throws<ArgumentNullException>(() => RxSerialPort.Connect(serialPortFactory, readFunction));
+			Assert.Throws<ArgumentNullException>(() => RxSerialPort.Connect(serialPortFactory, RxSerialPort_TestTools.mockReadFunction));
 		}
 
 		[Fact]
