@@ -26,7 +26,7 @@
 		[Fact]
 		public void ConnectAndRead_Creation_Normal()
 		{
-			Func<SerialPort> serialPortFactory = () => new SerialPort();
+			static SerialPort serialPortFactory() => new SerialPort();
 
 			var serialPortObservable = RxSerialPort.Connect(serialPortFactory, RxSerialPort_TestTools.MockReadFunction);
 
@@ -44,11 +44,10 @@
 		[Fact]
 		public void ConnectAndRead_Creation_PortFactoryReturnsNull()
 		{
-			Func<SerialPort, string> readFunction = port => string.Empty;
-			Func<SerialPort> serialPortFactory = () => null;
+			static SerialPort serialPortFactory() => null;
 			bool errorCalled = false;
 
-			var sub = RxSerialPort.Connect(serialPortFactory, readFunction)
+			var sub = RxSerialPort.Connect(serialPortFactory, RxSerialPort_TestTools.MockReadFunction)
 				.Subscribe(
 					@event => Assert.True(false),
 					ex =>
