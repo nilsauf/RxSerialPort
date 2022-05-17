@@ -26,7 +26,7 @@
 		[Fact]
 		public void Connect_Creation_Normal()
 		{
-			Func<SerialPort> serialPortFactory = () => new SerialPort();
+			static SerialPort serialPortFactory() => new SerialPort();
 
 			var serialPortObservable = RxSerialPort.Connect(serialPortFactory);
 

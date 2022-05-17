@@ -37,7 +37,7 @@
 		[Fact]
 		public void CreatObserver_Creation_FactoryCreatesNull()
 		{
-			Func<SerialPort> portFactory = () => null;
+			static SerialPort portFactory() => null;
 
 			Assert.Throws<InvalidOperationException>(
 				() => RxSerialPort.CreateObserver<string>(
