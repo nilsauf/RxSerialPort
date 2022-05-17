@@ -1,5 +1,7 @@
 ﻿namespace System.IO.Ports.Tests
 {
+	using System.Diagnostics.CodeAnalysis;
+
 	public static class RxSerialPort_TestTools
 	{
 		public static void OpenSafelyForTest(this SerialPort serialPort)
@@ -17,7 +19,10 @@
 			}
 		}
 
-		public static string mockReadFunction(SerialPort port) => string.Empty;
-		public static void mockWriteFunction(SerialPort port, string payload) { }
+		[SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "its ok here")]
+		public static string MockReadFunction(SerialPort port) => string.Empty;
+
+		[SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "its ok here")]
+		public static void MockWriteFunction(SerialPort port, string payload) { }
 	}
 }

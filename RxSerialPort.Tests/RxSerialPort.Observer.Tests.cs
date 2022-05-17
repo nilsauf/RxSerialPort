@@ -10,7 +10,7 @@
 		{
 			var serialPortObserver = RxSerialPort.CreateObserver<string>(
 				() => new SerialPort(),
-				RxSerialPort_TestTools.mockWriteFunction);
+				RxSerialPort_TestTools.MockWriteFunction);
 
 			Assert.NotNull(serialPortObserver);
 		}
@@ -31,7 +31,7 @@
 			Assert.Throws<ArgumentNullException>(
 				() => RxSerialPort.CreateObserver<string>(
 					portFactory,
-					RxSerialPort_TestTools.mockWriteFunction));
+					RxSerialPort_TestTools.MockWriteFunction));
 		}
 
 		[Fact]
@@ -42,7 +42,7 @@
 			Assert.Throws<InvalidOperationException>(
 				() => RxSerialPort.CreateObserver<string>(
 					portFactory,
-					RxSerialPort_TestTools.mockWriteFunction));
+					RxSerialPort_TestTools.MockWriteFunction));
 		}
 
 		[Fact]
@@ -50,7 +50,7 @@
 		{
 			var serialPort = new SerialPort();
 
-			var serialPortObserver = serialPort.AsObserver<string>(RxSerialPort_TestTools.mockWriteFunction);
+			var serialPortObserver = serialPort.AsObserver<string>(RxSerialPort_TestTools.MockWriteFunction);
 
 			Assert.NotNull(serialPortObserver);
 		}
@@ -70,7 +70,7 @@
 			SerialPort serialPort = null;
 
 			Assert.Throws<ArgumentNullException>(
-				() => serialPort.AsObserver<string>(RxSerialPort_TestTools.mockWriteFunction));
+				() => serialPort.AsObserver<string>(RxSerialPort_TestTools.MockWriteFunction));
 		}
 
 #if TEST_WITH_REAL_PORTS
