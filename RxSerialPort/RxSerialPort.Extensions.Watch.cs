@@ -7,8 +7,6 @@
 
 	public static partial class RxSerialPort_Extensions
 	{
-#pragma warning disable CS8629 // Nullable value type may be null.
-
 		/// <summary>
 		/// Watch the data read events of an observable stream of <see cref="RxSerialPortEvent{TData}"/>
 		/// </summary>
@@ -97,7 +95,5 @@
 			return portEvents.Where(@event => @event.EventType == RxSerialPortEventType.Disposed)
 				.Select(_ => Unit.Default);
 		}
-
-#pragma warning restore CS8629 // Nullable value type may be null.
 	}
 }
