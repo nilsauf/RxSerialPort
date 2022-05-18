@@ -74,7 +74,8 @@
 			receivingPort.OpenSafelyForTest();
 			sendingPort.OpenSafelyForTest();
 
-			using var sub = receivingPort.Connect(port => port.ReadLine())
+			using var sub = receivingPort.Connect()
+				.AndRead(port => port.ReadLine())
 				.WatchData()
 				.Subscribe(data =>
 				{
@@ -97,9 +98,8 @@
 			using var sendingPort = new SerialPort(SerialPort.GetPortNames()[1]);
 			sendingPort.OpenSafelyForTest();
 
-			using var sub = RxSerialPort.Connect(
-					() => new SerialPort(SerialPort.GetPortNames()[0]),
-					port => port.ReadLine())
+			using var sub = RxSerialPort.Connect(() => new SerialPort(SerialPort.GetPortNames()[0]))
+				.AndRead(port => port.ReadLine())
 				.WatchData()
 				.Subscribe(data =>
 				{

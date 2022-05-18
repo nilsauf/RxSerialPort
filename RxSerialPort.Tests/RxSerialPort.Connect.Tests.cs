@@ -1,6 +1,7 @@
 ﻿namespace System.IO.Ports.Tests
 {
 	using System;
+	using System.Reactive.Linq;
 	using Xunit;
 
 	public class RxSerialPort_Connect_Tests
@@ -40,5 +41,19 @@
 
 			Assert.Throws<ArgumentNullException>(() => RxSerialPort.Connect(serialPortFactory));
 		}
+
+#if TEST_WITH_REAL_PORTS
+		[Fact]
+		public void Connect_MultipleSubscriptions()
+		{
+			var portObservable = RxSerialPort.Connect(SerialPort.GetPortNames()[0]);
+
+			using var sub1 = portObservable.Subscribe();
+			using var sub2 = portObservable.Subscribe();
+
+			Assert.NotNull(sub1);
+			Assert.NotNull(sub2);
+		}
+#endif
 	}
 }

@@ -1,6 +1,8 @@
 ﻿namespace System.IO.Ports
 {
+	using ReactiveMarbles.ObservableEvents;
 	using System.Reactive;
+	using System.Reactive.Linq;
 
 	/// <summary>
 	/// Extensionmethods to make a <see cref="SerialPort"/> reactive and static methods to create observable streams of <see cref="SerialPort"/> events
@@ -129,16 +131,8 @@
 		/// <returns>An observable stream of serial port events of the <see cref="SerialPort"/> created by <paramref name="portFactory"/>.</returns>
 		/// <exception cref="ArgumentNullException"></exception>
 		/// <remarks>
-		/// <list type="bullet">
-		/// <item>
 		/// The created <see cref="SerialPort"/> will be managed by the stream. 
 		/// Don't open, close, dispose or use it anywhere else.
-		/// </item>
-		/// <item>
-		/// This overload does NOT read data if data was received! 
-		/// Use <see cref="RxSerialPort.Connect{TData}(Func{SerialPort}, Func{SerialPort, TData})"/> if data should be read.
-		/// </item>
-		/// </list>
 		/// </remarks>
 		public static IObservable<RxSerialPortEvent<Unit>> Connect(
 			Func<SerialPort> portFactory)
@@ -148,7 +142,29 @@
 				throw new ArgumentNullException(nameof(portFactory));
 			}
 
-			return Connect<Unit>(portFactory);
+			return Observable.Using(portFactory, serialPort =>
+			{
+				if (serialPort is null)
+				{
+					return Observable.Throw<RxSerialPortEvent<Unit>>(
+						new InvalidOperationException($"{nameof(portFactory)} of Connect returned null!"));
+				}
+
+				if (serialPort.IsOpen == false)
+				{
+					try
+					{
+						serialPort.Open();
+					}
+					catch (Exception ex)
+					{
+						return Observable.Throw<RxSerialPortEvent<Unit>>(ex);
+					}
+				}
+				return serialPort.Connect();
+			})
+			.Publish()
+			.AutoConnect();
 		}
 
 		/// <summary>
@@ -159,16 +175,8 @@
 		/// <returns>An observable stream of serial port events.</returns>
 		/// <exception cref="ArgumentNullException"></exception>S
 		/// <remarks>
-		/// <list type="bullet">
-		/// <item>
 		/// The provided <paramref name="serialPort"/> will NOT be managed by the stream!
 		/// It needs to be opend, closed and disposed by the using code.
-		/// </item>
-		/// <item>
-		/// This overload does NOT read data if data was received! 
-		/// Use <see cref="RxSerialPort.Connect{TData}(Func{SerialPort}, Func{SerialPort, TData})"/> if data should be read.
-		/// </item>
-		/// </list>
 		/// </remarks>
 		public static IObservable<RxSerialPortEvent<Unit>> Connect(
 			this SerialPort serialPort)
@@ -178,7 +186,35 @@
 				throw new ArgumentNullException(nameof(serialPort));
 			}
 
-			return serialPort.Connect<Unit>();
+			var serialPortEvents = serialPort.Events();
+
+			return Observable.Merge(
+					serialPortEvents.DataReceived.Select(CreateReceived),
+					serialPortEvents.Disposed.Select(CreateDisposed),
+					serialPortEvents.ErrorReceived.Select(CreateErrorReceived),
+					serialPortEvents.PinChanged.Select(CreatePinChanged))
+				.TakeUntil(@event => @event.EventType == RxSerialPortEventType.Disposed)
+				.AsObservable();
+
+			RxSerialPortEvent<Unit> CreateReceived(SerialDataReceivedEventArgs dataReceivedArgs)
+			{
+				return new RxSerialPortEvent<Unit>(serialPort, dataReceivedArgs.EventType);
+			}
+
+			RxSerialPortEvent<Unit> CreateDisposed(EventArgs _)
+			{
+				return new RxSerialPortEvent<Unit>(serialPort);
+			}
+
+			RxSerialPortEvent<Unit> CreateErrorReceived(SerialErrorReceivedEventArgs errorEventArgs)
+			{
+				return new RxSerialPortEvent<Unit>(serialPort, errorEventArgs.EventType);
+			}
+
+			RxSerialPortEvent<Unit> CreatePinChanged(SerialPinChangedEventArgs pinChangedEventArgs)
+			{
+				return new RxSerialPortEvent<Unit>(serialPort, pinChangedEventArgs.EventType);
+			}
 		}
 	}
 }

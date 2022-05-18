@@ -1,52 +1,58 @@
-﻿namespace System.IO.Ports
+﻿#nullable enable
+
+namespace System.IO.Ports
 {
 	using System;
 
-	/// <summary>
+	/// <summary>s
 	/// An event description of a <see cref="SerialPort"/> event
 	/// </summary>
 	public struct RxSerialPortEvent<TData>
 	{
-		internal RxSerialPortEvent(string portName, SerialData serialData, TData data)
-			: this(portName, RxSerialPortEventType.DataReceivedAndRead)
+		internal RxSerialPortEvent(SerialPort serialPort, SerialData serialData, TData data)
+			: this(serialPort, RxSerialPortEventType.DataReceivedAndRead, serialData: serialData, data: data)
 		{
+		}
+
+		internal RxSerialPortEvent(SerialPort serialPort, SerialData serialData)
+			: this(serialPort, RxSerialPortEventType.DataReceived, serialData: serialData)
+		{
+		}
+
+		internal RxSerialPortEvent(SerialPort serialPort, SerialError errorType)
+			: this(serialPort, RxSerialPortEventType.ErrorReceived, errorType: errorType)
+		{
+		}
+
+		internal RxSerialPortEvent(SerialPort serialPort, SerialPinChange pinChangeType)
+			: this(serialPort, RxSerialPortEventType.PinChanged, pinChangeType: pinChangeType)
+		{
+		}
+
+		internal RxSerialPortEvent(SerialPort serialPort)
+			: this(serialPort, RxSerialPortEventType.Disposed)
+		{
+		}
+
+		private RxSerialPortEvent(
+			SerialPort serialPort,
+			RxSerialPortEventType eventType,
+			TData? data = default(TData?),
+			SerialData? serialData = null,
+			SerialError? errorType = null,
+			SerialPinChange? pinChangeType = null)
+		{
+			this.serialPort = serialPort ?? throw new ArgumentNullException(nameof(serialPort));
+			this.PortName = this.serialPort.PortName;
+			this.EventType = eventType;
 			this.Data = data;
 			this.SerialData = serialData;
-		}
-
-		internal RxSerialPortEvent(string portName, SerialData serialData)
-			: this(portName, RxSerialPortEventType.DataReceived)
-		{
-			this.SerialData = serialData;
-		}
-
-		internal RxSerialPortEvent(string portName, SerialError errorType)
-			: this(portName, RxSerialPortEventType.ErrorReceived)
-		{
 			this.ErrorType = errorType;
-		}
-
-		internal RxSerialPortEvent(string portName, SerialPinChange pinChangeType)
-			: this(portName, RxSerialPortEventType.PinChanged)
-		{
 			this.PinChangeType = pinChangeType;
-		}
-
-		internal RxSerialPortEvent(string portName)
-			: this(portName, RxSerialPortEventType.Disposed)
-		{
-		}
-
-		private RxSerialPortEvent(string portName, RxSerialPortEventType eventType)
-		{
-			this.PortName = portName ?? throw new ArgumentNullException(nameof(portName));
-			this.EventType = eventType;
-			this.Data = default(TData?);
-			this.SerialData = null;
-			this.ErrorType = null;
-			this.PinChangeType = null;
 			this.TimeStamp = DateTime.Now;
 		}
+
+		internal readonly SerialPort serialPort;
 
 		/// <summary>
 		/// The name of the serialport which sended this event
@@ -78,7 +84,23 @@
 		/// </summary>
 		public SerialPinChange? PinChangeType { get; }
 
+		/// <summary>
+		/// The time this event was created.
+		/// </summary>
 		public DateTime TimeStamp { get; }
+
+		internal RxSerialPortEvent<TTargetData> CastTo<TTargetData>()
+		{
+			if (this.EventType is RxSerialPortEventType.DataReceivedAndRead)
+				throw new InvalidOperationException("Can't convert event with read data to other event data type");
+			return new RxSerialPortEvent<TTargetData>(
+				this.serialPort,
+				this.EventType,
+				default(TTargetData?),
+				this.SerialData,
+				this.ErrorType,
+				this.PinChangeType);
+		}
 
 		/// <inheritdoc/>
 		public override string ToString()
