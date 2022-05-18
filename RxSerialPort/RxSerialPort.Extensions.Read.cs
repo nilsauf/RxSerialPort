@@ -85,10 +85,14 @@
 				yield return unitEvent.CastTo<TData>();
 				if (unitEvent.EventType is RxSerialPortEventType.DataReceived)
 				{
-					yield return new RxSerialPortEvent<TData>(
-						unitEvent.serialPort,
-						unitEvent.SerialData.GetValueOrDefault(),
-						readFunction(unitEvent.serialPort));
+					while (unitEvent.serialPort.BytesToRead > 0)
+					{
+						yield return new RxSerialPortEvent<TData>(
+							unitEvent.serialPort,
+							unitEvent.SerialData.GetValueOrDefault(),
+							readFunction(unitEvent.serialPort),
+							unitEvent.TimeStamp);
+					}
 				}
 			}
 		}

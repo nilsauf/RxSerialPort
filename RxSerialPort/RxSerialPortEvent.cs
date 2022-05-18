@@ -9,8 +9,8 @@ namespace System.IO.Ports
 	/// </summary>
 	public struct RxSerialPortEvent<TData>
 	{
-		internal RxSerialPortEvent(SerialPort serialPort, SerialData serialData, TData data)
-			: this(serialPort, RxSerialPortEventType.DataReceivedAndRead, serialData: serialData, data: data)
+		internal RxSerialPortEvent(SerialPort serialPort, SerialData serialData, TData data, DateTime timestamp)
+			: this(serialPort, RxSerialPortEventType.DataReceivedAndRead, serialData: serialData, data: data, timestamp: timestamp)
 		{
 		}
 
@@ -40,7 +40,8 @@ namespace System.IO.Ports
 			TData? data = default(TData?),
 			SerialData? serialData = null,
 			SerialError? errorType = null,
-			SerialPinChange? pinChangeType = null)
+			SerialPinChange? pinChangeType = null,
+			DateTime? timestamp = null)
 		{
 			this.serialPort = serialPort ?? throw new ArgumentNullException(nameof(serialPort));
 			this.PortName = this.serialPort.PortName;
@@ -49,7 +50,7 @@ namespace System.IO.Ports
 			this.SerialData = serialData;
 			this.ErrorType = errorType;
 			this.PinChangeType = pinChangeType;
-			this.TimeStamp = DateTime.Now;
+			this.TimeStamp = timestamp ?? DateTime.Now;
 		}
 
 		internal readonly SerialPort serialPort;
@@ -99,7 +100,8 @@ namespace System.IO.Ports
 				default(TTargetData?),
 				this.SerialData,
 				this.ErrorType,
-				this.PinChangeType);
+				this.PinChangeType,
+				this.TimeStamp);
 		}
 
 		/// <inheritdoc/>
