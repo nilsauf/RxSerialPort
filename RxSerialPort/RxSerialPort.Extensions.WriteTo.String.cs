@@ -199,7 +199,7 @@
 				throw new ArgumentNullException(nameof(portFactory));
 			}
 
-			return source.Subscribe(RxSerialPort.CreateWriteObserver(portFactory, errorAction, completedAction));
+			return source.Subscribe(RxSerialPort_Observer.CreateWriteObserver(portFactory, errorAction, completedAction));
 		}
 
 		/// <summary>

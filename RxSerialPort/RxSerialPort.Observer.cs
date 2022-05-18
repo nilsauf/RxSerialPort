@@ -3,7 +3,7 @@
 	using System;
 	using System.Reactive;
 
-	public static partial class RxSerialPort
+	public static partial class RxSerialPort_Observer
 	{
 		/// <summary>
 		/// Creates and manages a <see cref="SerialPort"/> and wraps it into an <see cref="IObserver{T}"/>
@@ -19,7 +19,7 @@
 		/// The created <see cref="SerialPort"/> will be managed by the stream. 
 		/// Don't open, close, dispose or use it anywhere else.
 		/// </remarks>
-		public static IObserver<TData> CreateObserver<TData>(
+		public static IObserver<TData> Create<TData>(
 			Func<SerialPort> portFactory,
 			Action<SerialPort, TData> writeAction,
 			Action<Exception> errorAction = null,

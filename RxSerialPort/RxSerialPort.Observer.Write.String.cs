@@ -2,7 +2,7 @@
 {
 	using System;
 
-	public static partial class RxSerialPort
+	public static partial class RxSerialPort_Observer
 	{
 		/// <summary>
 		/// Creates and manages a <see cref="SerialPort"/> and wraps it into an <see cref="IObserver{T}"/> which uses <see cref="SerialPort.Write(string)"/> to send data.
@@ -27,7 +27,7 @@
 				throw new ArgumentNullException(nameof(portFactory));
 			}
 
-			return CreateObserver<string>(
+			return Create<string>(
 				portFactory,
 				(serialPort, data) => serialPort.Write(data),
 				errorAction,

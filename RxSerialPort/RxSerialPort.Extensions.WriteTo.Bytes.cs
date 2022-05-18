@@ -197,7 +197,7 @@
 				throw new ArgumentNullException(nameof(portFactory));
 			}
 
-			return source.Subscribe(RxSerialPort.CreateBytesObserver(portFactory, errorAction, completedAction));
+			return source.Subscribe(RxSerialPort_Observer.CreateBytesObserver(portFactory, errorAction, completedAction));
 		}
 
 		/// <summary>

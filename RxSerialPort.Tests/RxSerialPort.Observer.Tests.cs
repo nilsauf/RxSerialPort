@@ -8,7 +8,7 @@
 		[Fact]
 		public void CreateObserver_Creation_Normal()
 		{
-			var serialPortObserver = RxSerialPort.CreateObserver<string>(
+			var serialPortObserver = RxSerialPort_Observer.Create<string>(
 				() => new SerialPort(),
 				RxSerialPort_TestTools.MockWriteFunction);
 
@@ -20,7 +20,7 @@
 		{
 			Action<SerialPort, string> writeAction = null;
 
-			Assert.Throws<ArgumentNullException>(() => RxSerialPort.CreateObserver(() => new SerialPort(), writeAction));
+			Assert.Throws<ArgumentNullException>(() => RxSerialPort_Observer.Create(() => new SerialPort(), writeAction));
 		}
 
 		[Fact]
@@ -29,7 +29,7 @@
 			Func<SerialPort> portFactory = null;
 
 			Assert.Throws<ArgumentNullException>(
-				() => RxSerialPort.CreateObserver<string>(
+				() => RxSerialPort_Observer.Create<string>(
 					portFactory,
 					RxSerialPort_TestTools.MockWriteFunction));
 		}
@@ -40,7 +40,7 @@
 			static SerialPort portFactory() => null;
 
 			Assert.Throws<InvalidOperationException>(
-				() => RxSerialPort.CreateObserver<string>(
+				() => RxSerialPort_Observer.Create<string>(
 					portFactory,
 					RxSerialPort_TestTools.MockWriteFunction));
 		}
