@@ -6,7 +6,7 @@
 	using System.Reactive;
 	using System.Reactive.Linq;
 
-	public static partial class RxSerialPort
+	public static partial class RxSerialPort_Extensions
 	{
 		public static IObservable<RxSerialPortEvent<string>> AndReadLine(
 			this IObservable<RxSerialPortEvent<Unit>> serialPortEvents)

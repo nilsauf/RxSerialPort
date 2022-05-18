@@ -2,7 +2,7 @@
 {
 	using System;
 
-	public static partial class RxSerialPort
+	public static partial class RxSerialPort_Extensions
 	{
 		/// <summary>
 		/// Sends the <paramref name="source"/> data to a <see cref="SerialPort"/> using <see cref="SerialPort.Write(string)"/>.
@@ -199,7 +199,7 @@
 				throw new ArgumentNullException(nameof(portFactory));
 			}
 
-			return source.Subscribe(CreateWriteObserver(portFactory, errorAction, completedAction));
+			return source.Subscribe(RxSerialPort.CreateWriteObserver(portFactory, errorAction, completedAction));
 		}
 
 		/// <summary>

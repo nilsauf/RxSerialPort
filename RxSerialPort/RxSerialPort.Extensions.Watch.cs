@@ -5,7 +5,7 @@
 	using System.Reactive;
 	using System.Reactive.Linq;
 
-	public static partial class RxSerialPort
+	public static partial class RxSerialPort_Extensions
 	{
 #pragma warning disable CS8629 // Nullable value type may be null.
 
