@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Project>
+  <PropertyGroup>
+    <Platform>AnyCPU</Platform>
+    <IsTestProject>$(MSBuildProjectName.Contains('.Test'))</IsTestProject>
+    <DebugType>embedded</DebugType>        
+    <GenerateDocumentationFile  Condition="!$(IsTestProject)">true</GenerateDocumentationFile>
+    
+    <Authors>Nils Aufschläger</Authors>
+    <Owners>Nils Aufschläger</Owners>
+    <Copyright>Copyright (c) Nils Aufschläger 2022</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/nilsauf/RxSerialPort</PackageProjectUrl>
+    <PackageIconUrl></PackageIconUrl>
+    <PackageTags>Mqtt;MqttClient;Rx;Reactive;Observable</PackageTags>
+    <PackageReleaseNotes>https://github.com/nilsauf/RxSerialPort/releases</PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/nilsauf/RxSerialPort</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+        
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <!-- Publish the repository URL in the built .nupkg (in the NuSpec <Repository> element) -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl> 
+    <!-- Embed source files that are not tracked by the source control manager in the PDB -->
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <!-- Include PDB in the built .nupkg -->
+    <IncludeSymbols>true</IncludeSymbols>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" /> 
+  </ItemGroup>
+  
+   <PropertyGroup>
+    <SolutionDir Condition="'$(SolutionDir)' == ''">$(MSBuildThisFileDirectory)</SolutionDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)LICENSE" Pack="true" PackagePath="LICENSE" />
+  </ItemGroup>
+
+  <ItemGroup>	
+    <PackageReference Include="Nerdbank.GitVersioning" Version="3.4.255" PrivateAssets="all" />	
+  </ItemGroup>
+  
+  <PropertyGroup>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest</AnalysisLevel>
+  </PropertyGroup>
+</Project>
