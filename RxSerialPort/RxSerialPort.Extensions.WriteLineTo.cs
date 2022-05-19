@@ -185,7 +185,7 @@
 		/// </remarks>
 		public static IDisposable WriteLineTo(
 			this IObservable<string> source,
-			Func<SerialPort> portFactoy,
+			Func<SerialPort> portFactory,
 			Action<Exception> errorAction = null,
 			Action completedAction = null)
 		{
@@ -194,12 +194,12 @@
 				throw new ArgumentNullException(nameof(source));
 			}
 
-			if (portFactoy is null)
+			if (portFactory is null)
 			{
-				throw new ArgumentNullException(nameof(portFactoy));
+				throw new ArgumentNullException(nameof(portFactory));
 			}
 
-			return source.Subscribe(RxSerialPort_Observer.CreateWriteLineObserver(portFactoy, errorAction, completedAction));
+			return source.Subscribe(RxSerialPort_Observer.CreateWriteLineObserver(portFactory, errorAction, completedAction));
 		}
 
 		/// <summary>
