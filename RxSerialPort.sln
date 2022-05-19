@@ -1,0 +1,41 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32421.90
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RxSerialPort", "RxSerialPort\RxSerialPort.csproj", "{57ED2835-D4D0-40E5-AFEF-28347FBECC23}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RxSerialPort.Tests", "RxSerialPort.Tests\RxSerialPort.Tests.csproj", "{EF5E3866-F3E6-4B36-80B4-1764E918BB88}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{87A9C833-6BA9-4584-A108-73A274D61873}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.github\dependabot.yml = .github\dependabot.yml
+		Directory.Build.props = Directory.Build.props
+		LICENSE = LICENSE
+		README.md = README.md
+		version.json = version.json
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{57ED2835-D4D0-40E5-AFEF-28347FBECC23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57ED2835-D4D0-40E5-AFEF-28347FBECC23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57ED2835-D4D0-40E5-AFEF-28347FBECC23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57ED2835-D4D0-40E5-AFEF-28347FBECC23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF5E3866-F3E6-4B36-80B4-1764E918BB88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF5E3866-F3E6-4B36-80B4-1764E918BB88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF5E3866-F3E6-4B36-80B4-1764E918BB88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF5E3866-F3E6-4B36-80B4-1764E918BB88}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {000EF1E6-66A8-49E0-B04D-6CF0C78B62D9}
+	EndGlobalSection
+EndGlobal
