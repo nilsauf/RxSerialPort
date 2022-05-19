@@ -3,6 +3,8 @@
 	using System;
 	using Xunit;
 
+#pragma warning disable CS8603 // Possible null reference return.
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
 	public class RxSerialPort_Observer_Tests
 	{
 		[Fact]
@@ -98,4 +100,6 @@
 
 #endif
 	}
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+#pragma warning restore CS8603 // Possible null reference return.
 }

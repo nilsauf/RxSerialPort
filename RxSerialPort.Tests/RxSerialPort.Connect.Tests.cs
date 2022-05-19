@@ -1,9 +1,9 @@
 ﻿namespace System.IO.Ports.Tests
 {
 	using System;
-	using System.Reactive.Linq;
 	using Xunit;
 
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
 	public class RxSerialPort_Connect_Tests
 	{
 		[Fact]
@@ -56,4 +56,5 @@
 		}
 #endif
 	}
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
 }

@@ -3,6 +3,9 @@
 	using System;
 	using System.Reactive;
 
+	/// <summary>
+	/// Methods to create an observer from a <see cref="SerialPort"/>
+	/// </summary>
 	public static partial class RxSerialPort_Observer
 	{
 		/// <summary>

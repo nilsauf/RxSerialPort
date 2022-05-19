@@ -15,10 +15,6 @@
 		/// <param name="portName">The name of the port to connect to.</param>
 		/// <returns>An observable stream of serial port events of the <see cref="SerialPort"/>.</returns>
 		/// <exception cref="ArgumentException"></exception>
-		/// <remarks>
-		/// This overload does NOT read data if data was received! 
-		/// Use <see cref="RxSerialPort.Connect{TData}(string, Func{SerialPort, TData})"/> if data should be read.
-		/// </remarks>
 		public static IObservable<RxSerialPortEvent<Unit>> Connect(
 			string portName)
 		{
@@ -37,10 +33,6 @@
 		/// <param name="baudRate">The baudrate setting of the port to connect to.</param>
 		/// <returns>An observable stream of serial port events of the <see cref="SerialPort"/>.</returns>
 		/// <exception cref="ArgumentException"></exception>
-		/// <remarks>
-		/// This overload does NOT read data if data was received! 
-		/// Use <see cref="RxSerialPort.Connect{TData}(string, int, Func{SerialPort, TData})"/> if data should be read.
-		/// </remarks>
 		public static IObservable<RxSerialPortEvent<Unit>> Connect(
 			string portName, int baudRate)
 		{
@@ -60,10 +52,6 @@
 		/// <param name="parity">The parity settings of the port to connect to.</param>
 		/// <returns>An observable stream of serial port events of the <see cref="SerialPort"/>.</returns>
 		/// <exception cref="ArgumentException"></exception>
-		/// <remarks>
-		/// This overload does NOT read data if data was received! 
-		/// Use <see cref="RxSerialPort.Connect{TData}(string, int, Parity, Func{SerialPort, TData})"/> if data should be read.
-		/// </remarks>
 		public static IObservable<RxSerialPortEvent<Unit>> Connect(
 			string portName, int baudRate, Parity parity)
 		{
@@ -84,10 +72,6 @@
 		/// <param name="dataBits">The dataBits setting of the port to connect to.</param>
 		/// <returns>An observable stream of serial port events of the <see cref="SerialPort"/>.</returns>
 		/// <exception cref="ArgumentException"></exception>
-		/// <remarks>
-		/// This overload does NOT read data if data was received! 
-		/// Use <see cref="RxSerialPort.Connect{TData}(string, int, Parity, int, Func{SerialPort, TData})"/> if data should be read.
-		/// </remarks>
 		public static IObservable<RxSerialPortEvent<Unit>> Connect(
 			string portName, int baudRate, Parity parity, int dataBits)
 		{
@@ -109,10 +93,6 @@
 		/// <param name="stopBits">The stopBits setting of the port to connect to.</param>
 		/// <returns>An observable stream of serial port events of the <see cref="SerialPort"/>.</returns>
 		/// <exception cref="ArgumentException"></exception>
-		/// <remarks>
-		/// This overload does NOT read data if data was received! 
-		/// Use <see cref="RxSerialPort.Connect{TData}(string, int, Parity, int, StopBits, Func{SerialPort, TData})"/> if data should be read.
-		/// </remarks>
 		public static IObservable<RxSerialPortEvent<Unit>> Connect(
 			string portName, int baudRate, Parity parity, int dataBits, StopBits stopBits)
 		{
@@ -171,7 +151,6 @@
 		/// Connects to the events of a <see cref="SerialPort"/>.
 		/// </summary>
 		/// <param name="serialPort">The <see cref="SerialPort"/> to connect to.</param>
-		/// <param name="readFunc">An optional function to read data from <paramref name="serialPort"/> on data reveceived</param>
 		/// <returns>An observable stream of serial port events.</returns>
 		/// <exception cref="ArgumentNullException"></exception>S
 		/// <remarks>
