@@ -13,7 +13,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/nilsauf/RxSerialPort</PackageProjectUrl>
     <PackageIconUrl></PackageIconUrl>
-    <PackageTags>Mqtt;MqttClient;Rx;Reactive;Observable</PackageTags>
+    <PackageTags>SerialPort;Rx;Reactive;Observable</PackageTags>
     <PackageReleaseNotes>https://github.com/nilsauf/RxSerialPort/releases</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/nilsauf/RxSerialPort</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
