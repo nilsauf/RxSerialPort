@@ -1,8 +1,6 @@
-name: Build
+name: Build And Release
 
 on:
-  push:
-    branches: [ main ]
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches: [ main ]
@@ -71,7 +69,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
     needs: build
-    if: contains(github.event.pull_request.labels.*.name, 'release') && github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
     steps:
     - name: Checkout
       uses: actions/checkout@v2
