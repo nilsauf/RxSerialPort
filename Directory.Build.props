@@ -39,7 +39,7 @@
 
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)LICENSE" Pack="true" PackagePath="LICENSE" />
-	<None Condition="!$(IsTestProject)" Include="$(MSBuildThisFileDirectory)README.md" Pack="true" PackagePath="\"/>
+	<None Condition="!$(IsTestProject)" Include="$(MSBuildThisFileDirectory)README.md" Pack="true" PackagePath=""/>
   </ItemGroup>
 
   <ItemGroup>	
