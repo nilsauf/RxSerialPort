@@ -5,7 +5,7 @@
     <Platform>AnyCPU</Platform>
     <IsTestProject>$(MSBuildProjectName.Contains('.Test'))</IsTestProject>
     <DebugType>embedded</DebugType>        
-    <GenerateDocumentationFile  Condition="!$(IsTestProject)">true</GenerateDocumentationFile>
+    <GenerateDocumentationFile Condition="!$(IsTestProject)">true</GenerateDocumentationFile>
     
     <Authors>Nils Aufschläger</Authors>
     <Owners>Nils Aufschläger</Owners>
@@ -13,7 +13,8 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/nilsauf/RxSerialPort</PackageProjectUrl>
     <PackageIconUrl></PackageIconUrl>
-    <PackageTags>Mqtt;MqttClient;Rx;Reactive;Observable</PackageTags>
+    <PackageTags>SerialPort;Rx;Reactive;Observable</PackageTags>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageReleaseNotes>https://github.com/nilsauf/RxSerialPort/releases</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/nilsauf/RxSerialPort</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -38,6 +39,7 @@
 
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)LICENSE" Pack="true" PackagePath="LICENSE" />
+	<None Condition="!$(IsTestProject)" Include="$(MSBuildThisFileDirectory)README.md" Pack="true" PackagePath=""/>
   </ItemGroup>
 
   <ItemGroup>	
