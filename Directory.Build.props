@@ -14,7 +14,6 @@
     <PackageProjectUrl>https://github.com/nilsauf/RxSerialPort</PackageProjectUrl>
     <PackageIconUrl></PackageIconUrl>
     <PackageTags>SerialPort;Rx;Reactive;Observable</PackageTags>
-	<PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageReleaseNotes>https://github.com/nilsauf/RxSerialPort/releases</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/nilsauf/RxSerialPort</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -27,6 +26,10 @@
     <!-- Include PDB in the built .nupkg -->
     <IncludeSymbols>true</IncludeSymbols>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework' == 'net6.0'">
+	  <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
