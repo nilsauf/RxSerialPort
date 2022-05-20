@@ -37,7 +37,7 @@ namespace System.IO.Ports
 		private RxSerialPortEvent(
 			SerialPort serialPort,
 			RxSerialPortEventType eventType,
-			TData? data = default(TData?),
+			TData? data = default,
 			SerialData? serialData = null,
 			SerialError? errorType = null,
 			SerialPinChange? pinChangeType = null,
@@ -97,7 +97,7 @@ namespace System.IO.Ports
 			return new RxSerialPortEvent<TTargetData>(
 				this.serialPort,
 				this.EventType,
-				default(TTargetData?),
+				default,
 				this.SerialData,
 				this.ErrorType,
 				this.PinChangeType,
@@ -112,20 +112,14 @@ namespace System.IO.Ports
 				$"{nameof(this.PortName)} = {this.PortName}" +
 				$"{nameof(this.TimeStamp)} = {this.TimeStamp.ToLongDateString()} {this.TimeStamp.ToLongTimeString()}";
 
-			switch (this.EventType)
+			return this.EventType switch
 			{
-				case RxSerialPortEventType.DataReceived:
-					return result + $"; {nameof(this.SerialData)} = {this.SerialData}";
-				case RxSerialPortEventType.DataReceivedAndRead:
-					return result + $"; {nameof(this.SerialData)} = {this.SerialData}; {nameof(this.Data)} = {this.Data}";
-				case RxSerialPortEventType.ErrorReceived:
-					return result + $"; {nameof(this.ErrorType)} = {this.ErrorType}";
-				case RxSerialPortEventType.PinChanged:
-					return result + $"; {nameof(this.PinChangeType)} = {this.PinChangeType}";
-				case RxSerialPortEventType.Disposed:
-				default:
-					return result;
-			}
+				RxSerialPortEventType.DataReceived => result + $"; {nameof(this.SerialData)} = {this.SerialData}",
+				RxSerialPortEventType.DataReceivedAndRead => result + $"; {nameof(this.SerialData)} = {this.SerialData}; {nameof(this.Data)} = {this.Data}",
+				RxSerialPortEventType.ErrorReceived => result + $"; {nameof(this.ErrorType)} = {this.ErrorType}",
+				RxSerialPortEventType.PinChanged => result + $"; {nameof(this.PinChangeType)} = {this.PinChangeType}",
+				_ => result,
+			};
 		}
 	}
 }
