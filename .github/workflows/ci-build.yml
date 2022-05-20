@@ -1,9 +1,11 @@
-name: Build And Release
+name: Build
 
 on:
+  push: 
+    branches: [ develop ]
   pull_request:
     types: [opened, synchronize, reopened, closed]
-    branches: [ main ]
+    branches: [ main, develop ]
 
 env:
   configuration: Release
@@ -16,12 +18,12 @@ jobs:
       nbgv: ${{ steps.nbgv.outputs.SemVer2 }}
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         fetch-depth: 0
 
     - name: Install .NET Core
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v2
       with:
         dotnet-version: | 
           5.0.x
@@ -71,15 +73,15 @@ jobs:
   release:
     runs-on: ubuntu-latest
     needs: build
-    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+    if: github.ref_name == 'main' && github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         fetch-depth: 0
 
     - name: Download NuGet Packages
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
       with:
         name: nuget    
 
