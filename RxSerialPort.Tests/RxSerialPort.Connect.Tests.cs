@@ -21,7 +21,7 @@
 		{
 			SerialPort serialPort = null;
 
-			Assert.Throws<ArgumentNullException>(() => serialPort.Connect());
+			Assert.Throws<ArgumentNullException>(() => serialPort!.Connect());
 		}
 
 		[Fact]
@@ -39,7 +39,7 @@
 		{
 			Func<SerialPort> serialPortFactory = null;
 
-			Assert.Throws<ArgumentNullException>(() => RxSerialPort.Connect(serialPortFactory));
+			Assert.Throws<ArgumentNullException>(() => RxSerialPort.Connect(serialPortFactory!));
 		}
 
 #if TEST_WITH_REAL_PORTS

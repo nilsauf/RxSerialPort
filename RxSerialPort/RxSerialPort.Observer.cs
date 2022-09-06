@@ -25,8 +25,8 @@
 		public static IObserver<TData> Create<TData>(
 			Func<SerialPort> portFactory,
 			Action<SerialPort, TData> writeAction,
-			Action<Exception> errorAction = null,
-			Action completedAction = null)
+			Action<Exception>? errorAction = null,
+			Action? completedAction = null)
 		{
 			if (portFactory is null)
 			{
@@ -76,8 +76,8 @@
 		public static IObserver<TData> AsObserver<TData>(
 			this SerialPort serialPort,
 			Action<SerialPort, TData> writeAction,
-			Action<Exception> errorAction = null,
-			Action completedAction = null)
+			Action<Exception>? errorAction = null,
+			Action? completedAction = null)
 		{
 			if (serialPort is null)
 			{

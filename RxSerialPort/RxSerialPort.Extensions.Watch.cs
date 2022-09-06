@@ -22,7 +22,7 @@
 
 			return portEvents.Where(@event => @event.EventType == RxSerialPortEventType.DataReceivedAndRead)
 				.Where(@event => @event.Data != null)
-				.Select(@event => @event.Data);
+				.Select(@event => @event.Data!);
 		}
 
 		/// <summary>
@@ -40,7 +40,7 @@
 
 			return portEvents.Where(@event => @event.EventType == RxSerialPortEventType.DataReceived)
 				.Where(@event => @event.SerialData.HasValue)
-				.Select(@event => @event.SerialData.Value);
+				.Select(@event => @event.SerialData!.Value);
 		}
 
 		/// <summary>
@@ -58,7 +58,7 @@
 
 			return portEvents.Where(@event => @event.EventType == RxSerialPortEventType.ErrorReceived)
 				.Where(@event => @event.ErrorType.HasValue)
-				.Select(@event => @event.ErrorType.Value);
+				.Select(@event => @event.ErrorType!.Value);
 		}
 
 		/// <summary>
@@ -76,7 +76,7 @@
 
 			return portEvents.Where(@event => @event.EventType == RxSerialPortEventType.PinChanged)
 				.Where(@event => @event.PinChangeType.HasValue)
-				.Select(@event => @event.PinChangeType.Value);
+				.Select(@event => @event.PinChangeType!.Value);
 		}
 
 		/// <summary>

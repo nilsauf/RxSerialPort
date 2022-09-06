@@ -22,7 +22,7 @@
 		{
 			Action<SerialPort, string> writeAction = null;
 
-			Assert.Throws<ArgumentNullException>(() => RxSerialPort_Observer.Create(() => new SerialPort(), writeAction));
+			Assert.Throws<ArgumentNullException>(() => RxSerialPort_Observer.Create(() => new SerialPort(), writeAction!));
 		}
 
 		[Fact]
@@ -32,7 +32,7 @@
 
 			Assert.Throws<ArgumentNullException>(
 				() => RxSerialPort_Observer.Create<string>(
-					portFactory,
+					portFactory!,
 					RxSerialPort_TestTools.MockWriteFunction));
 		}
 
@@ -63,7 +63,7 @@
 			var serialPort = new SerialPort();
 			Action<SerialPort, string> writeAction = null;
 
-			Assert.Throws<ArgumentNullException>(() => serialPort.AsObserver(writeAction));
+			Assert.Throws<ArgumentNullException>(() => serialPort.AsObserver(writeAction!));
 		}
 
 		[Fact]
@@ -72,7 +72,7 @@
 			SerialPort serialPort = null;
 
 			Assert.Throws<ArgumentNullException>(
-				() => serialPort.AsObserver<string>(RxSerialPort_TestTools.MockWriteFunction));
+				() => serialPort!.AsObserver<string>(RxSerialPort_TestTools.MockWriteFunction));
 		}
 
 #if TEST_WITH_REAL_PORTS

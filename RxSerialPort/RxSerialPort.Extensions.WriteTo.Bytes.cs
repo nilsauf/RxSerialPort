@@ -15,8 +15,8 @@
 		public static IDisposable WriteTo(
 			this IObservable<byte[]> source,
 			string portName,
-			Action<Exception> errorAction = null,
-			Action completedAction = null)
+			Action<Exception>? errorAction = null,
+			Action? completedAction = null)
 		{
 			if (source is null)
 			{
@@ -46,8 +46,8 @@
 			this IObservable<byte[]> source,
 			string portName,
 			int baudRate,
-			Action<Exception> errorAction = null,
-			Action completedAction = null)
+			Action<Exception>? errorAction = null,
+			Action? completedAction = null)
 		{
 			if (source is null)
 			{
@@ -79,8 +79,8 @@
 			string portName,
 			int baudRate,
 			Parity parity,
-			Action<Exception> errorAction = null,
-			Action completedAction = null)
+			Action<Exception>? errorAction = null,
+			Action? completedAction = null)
 		{
 			if (source is null)
 			{
@@ -114,8 +114,8 @@
 			int baudRate,
 			Parity parity,
 			int dataBits,
-			Action<Exception> errorAction = null,
-			Action completedAction = null)
+			Action<Exception>? errorAction = null,
+			Action? completedAction = null)
 		{
 			if (source is null)
 			{
@@ -151,8 +151,8 @@
 			Parity parity,
 			int dataBits,
 			StopBits stopBits,
-			Action<Exception> errorAction = null,
-			Action completedAction = null)
+			Action<Exception>? errorAction = null,
+			Action? completedAction = null)
 		{
 			if (source is null)
 			{
@@ -184,8 +184,8 @@
 		public static IDisposable WriteTo(
 			this IObservable<byte[]> source,
 			Func<SerialPort> portFactory,
-			Action<Exception> errorAction = null,
-			Action completedAction = null)
+			Action<Exception>? errorAction = null,
+			Action? completedAction = null)
 		{
 			if (source is null)
 			{
@@ -216,8 +216,8 @@
 		public static IDisposable WriteTo(
 			this IObservable<byte[]> source,
 			SerialPort serialPort,
-			Action<Exception> errorAction = null,
-			Action completedAction = null)
+			Action<Exception>? errorAction = null,
+			Action? completedAction = null)
 		{
 			if (source is null)
 			{
