@@ -7,7 +7,7 @@
 	/// <summary>
 	/// Extensionmethods to make a <see cref="SerialPort"/> reactive and static methods to create observable streams of <see cref="SerialPort"/> events
 	/// </summary>
-	public static partial class RxSerialPort
+	public static class RxSerialPort
 	{
 		/// <summary>
 		/// Connects to the events of a <see cref="SerialPort"/> created by <paramref name="portName"/>.
@@ -172,7 +172,7 @@
 					serialPortEvents.Disposed.Select(CreateDisposed),
 					serialPortEvents.ErrorReceived.Select(CreateErrorReceived),
 					serialPortEvents.PinChanged.Select(CreatePinChanged))
-				.TakeUntil(@event => @event.EventType == RxSerialPortEventType.Disposed)
+				.TakeUntil(@event => @event.EventType is RxSerialPortEventType.Disposed)
 				.AsObservable();
 
 			RxSerialPortEvent<Unit> CreateReceived(SerialDataReceivedEventArgs dataReceivedArgs)

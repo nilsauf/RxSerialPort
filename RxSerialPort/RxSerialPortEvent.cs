@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-namespace System.IO.Ports
+﻿namespace System.IO.Ports
 {
 	using System;
 

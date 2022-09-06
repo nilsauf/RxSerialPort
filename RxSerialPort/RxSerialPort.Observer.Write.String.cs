@@ -19,8 +19,8 @@
 		/// </remarks>
 		public static IObserver<string> CreateWriteObserver(
 			Func<SerialPort> portFactory,
-			Action<Exception> errorAction = null,
-			Action completedAction = null)
+			Action<Exception>? errorAction = null,
+			Action? completedAction = null)
 		{
 			if (portFactory is null)
 			{
@@ -48,8 +48,8 @@
 		/// </remarks>
 		public static IObserver<string> AsWriteObserver(
 			this SerialPort serialPort,
-			Action<Exception> errorAction = null,
-			Action completedAction = null)
+			Action<Exception>? errorAction = null,
+			Action? completedAction = null)
 		{
 			if (serialPort is null)
 			{
