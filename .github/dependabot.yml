@@ -7,6 +7,10 @@ updates:
     interval: daily
   open-pull-requests-limit: 10
   target-branch: "develop"
+  groups:
+    xunit:
+      patterns:
+      - "xunit*"
 
 - package-ecosystem: "github-actions"
   directory: "/"
@@ -15,7 +19,4 @@ updates:
   open-pull-requests-limit: 10
   target-branch: "develop"
 
-groups:
-  xunit:
-    patterns:
-    - "xunit*"
+
