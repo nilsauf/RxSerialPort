@@ -79,6 +79,6 @@ IDisposable subscription = stringsToWrite.WriteLineTo(serialPort, (serialPort, d
 
 ## Testing
 
-The test project consists mainly of tests to test the correct creation of the observbales and observers. To test with real serial ports the tag `TEST_WITH_REAL_PORTS` needs to be set to true.
+The test project consists mainly of tests to test the correct creation of the observables and observers. To test with real serial ports the tag `TEST_WITH_REAL_PORTS` needs to be set to true.
 
 Virtual COM Ports are very easy to setup with [NetBurner VirtualComPort](https://www.netburner.com/virtual-com-port/). One port needs to send its data to the other port.
