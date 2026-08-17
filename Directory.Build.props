@@ -14,7 +14,7 @@
     <PackageProjectUrl>https://github.com/nilsauf/RxSerialPort</PackageProjectUrl>
     <PackageIconUrl></PackageIconUrl>
     <PackageTags>SerialPort;Rx;Reactive;Observable</PackageTags>
-	<PackageReadmeFile>README.md</PackageReadmeFile>
+	  <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageReleaseNotes>https://github.com/nilsauf/RxSerialPort/releases</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/nilsauf/RxSerialPort</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
