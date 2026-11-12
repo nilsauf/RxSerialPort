@@ -23,12 +23,11 @@ jobs:
         fetch-depth: 0
 
     - name: Install .NET
-      uses: actions/setup-dotnet@v6.0.0
+      uses: actions/setup-dotnet@v6.1.0
       with:
         dotnet-version: | 
-          8.0.x
-          9.0.x
           10.0.x
+          11.0.x
 
     - name: NBGV
       id: nbgv
@@ -72,6 +71,9 @@ jobs:
         path: '**/*.nupkg'
 
   release:
+    permissions:
+      id-token: write   # NuGet/login OIDC
+      contents: write   # create tag + GitHub release
     runs-on: ubuntu-latest
     needs: build
     if: github.ref_name == 'main' && github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
@@ -100,9 +102,16 @@ jobs:
           body: |
             ${{ steps.changelog.outputs.commitLog }}
 
+    # Get a short-lived NuGet API key
+    - name: NuGet login (OIDC → temp API key)
+      uses: NuGet/login@v1
+      id: login
+      with:
+        user: ${{ secrets.NUGET_ORG_USERNAME }} # Set nuget.org username in repository secrets
+
     - name: NuGet Push
       env:
-        NUGET_AUTH_TOKEN: ${{ secrets.NUGET_API_KEY }} # Set nuget api token in repository secrets
+        NUGET_AUTH_TOKEN: ${{ steps.login.outputs.NUGET_API_KEY }}
         SOURCE_URL: https://api.nuget.org/v3/index.json
       run: |
         dotnet nuget push -s ${{ env.SOURCE_URL }} -k ${{ env.NUGET_AUTH_TOKEN }} **/*.nupkg

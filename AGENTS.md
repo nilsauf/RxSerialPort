@@ -5,8 +5,8 @@ Rx extensions over `System.IO.Ports.SerialPort` (reactive reads/writes). Two pro
 ## Build & test
 
 - `dotnet build` / `dotnet test` at the repo root — tests run across all TFMs (xunit.v3 + Microsoft.Testing.Platform; the test project is an `Exe`).
-- To run a single framework, use `--project`: `dotnet test --project RxSerialPort.Tests/RxSerialPort.Tests.csproj -f net8.0`. This SDK (10.0.110) rejects passing the csproj positionally — `--project` is required.
-- The library multi-targets `netstandard2.0;net8.0;net9.0;net10.0`; keep library code netstandard2.0-compatible.
+- To run a single framework, use `--project`: `dotnet test --project RxSerialPort.Tests/RxSerialPort.Tests.csproj -f net10.0`. The .NET SDK (10.0.110+) rejects passing the csproj positionally — `--project` is required.
+- The library multi-targets `netstandard2.0;net10.0;net11.0`; keep library code netstandard2.0-compatible.
 - Formatting: `dotnet format`. The `.editorconfig` enforces tabs, CRLF, BOM, and *no* trailing newline — match it or you'll generate noisy diffs. Avoid `var` (style rules require explicit types); member access is qualified with `this.`.
 
 ## Namespace is deliberate
